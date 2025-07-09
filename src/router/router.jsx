@@ -11,6 +11,8 @@ import AddProducts from "../Pages/DashBoard/VendorDashBoard/AddProducts/AddProdu
 import ViewMyProduct from "../Pages/DashBoard/VendorDashBoard/ViewMyProduct/ViewMyProduct";
 import UpdateProduct from "../Pages/DashBoard/VendorDashBoard/UpdateProduct/UpdateProduct";
 import AdvertisementsPage from "../Pages/DashBoard/VendorDashBoard/AdvertisementsPage/AdvertisementsPage";
+import PriceTrendChart from "../Pages/DashBoard/UserDashboard/PriceTrendChart/PriceTrendChart";
+import ManageWatchlist from "../Pages/DashBoard/UserDashboard/ManageWatchlist/ManageWatchlist";
 
 
 
@@ -64,6 +66,18 @@ export const router = createBrowserRouter([
                         path: 'advertisements/add',
                         element: <PrivateRoute>
                             <AdvertisementsPage></AdvertisementsPage>
+                        </PrivateRoute>
+                    },
+                    {
+                        path: '/dashboard/price-trends',
+                        element: <PrivateRoute>
+                            <PriceTrendChart></PriceTrendChart>
+                        </PrivateRoute>
+                    },
+                    {
+                        path: 'manage-watchlist',
+                        element: <PrivateRoute>
+                            <ManageWatchlist></ManageWatchlist>
                         </PrivateRoute>
                     }
                 ]

@@ -16,9 +16,12 @@ const ViewMyProduct = () => {
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/products?vendorEmail=${user.email}`)
+        .get(`/products?vendorEmail=${encodeURIComponent(user.email)}`)
         .then((res) => setProducts(res.data))
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          toast.error('Failed to fetch products');
+        });
     }
   }, [user, axiosSecure]);
 
@@ -36,7 +39,7 @@ const ViewMyProduct = () => {
         try {
           const res = await axiosSecure.delete(`/products/${id}`);
           if (res.data.deletedCount) {
-            setProducts(products.filter((p) => p._id !== id));
+            setProducts((prev) => prev.filter((p) => p._id !== id));
             toast.success('✅ Deleted successfully!');
           } else {
             toast.error('❌ Failed to delete');
@@ -73,52 +76,52 @@ const ViewMyProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((p, i) => (
-              <motion.tr
-                key={p._id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="hover:bg-green-50 border-t"
-              >
-                <td>{i + 1}</td>
-                <td>{p.itemName}</td>
-                <td>৳{p.pricePerUnit.toFixed(2)}</td>
-                <td>{p.marketName}</td>
-                <td>{p.date}</td>
-                <td className="capitalize">
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm ${
-                      p.status === 'approved'
-                        ? 'bg-green-200 text-green-800'
-                        : p.status === 'rejected'
-                        ? 'bg-red-200 text-red-800'
-                        : 'bg-yellow-200 text-yellow-800'
-                    }`}
-                  >
-                    {p.status}
-                  </span>
-                </td>
-                <td className="space-x-2 text-center">
-                  <button
-                    onClick={() =>
-                      navigate(`/dashboard/products/update/${p._id}`)
-                    }
-                    className="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(p._id)}
-                    className="btn btn-sm bg-red-600 hover:bg-red-700 text-white"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </motion.tr>
-            ))}
-
-            {products.length === 0 && (
+            {products.length > 0 ? (
+              products.map((p, i) => (
+                <motion.tr
+                  key={p._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="hover:bg-green-50 border-t"
+                >
+                  <td>{i + 1}</td>
+                  <td>{p.itemName}</td>
+                  <td>৳{p.pricePerUnit.toFixed(2)}</td>
+                  <td>{p.marketName}</td>
+                  <td>{p.date}</td>
+                  <td className="capitalize">
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm ${
+                        p.status === 'approved'
+                          ? 'bg-green-200 text-green-800'
+                          : p.status === 'rejected'
+                          ? 'bg-red-200 text-red-800'
+                          : 'bg-yellow-200 text-yellow-800'
+                      }`}
+                    >
+                      {p.status}
+                    </span>
+                  </td>
+                  <td className="space-x-2 text-center">
+                    <button
+                      onClick={() =>
+                        navigate(`/dashboard/products/update/${p._id}`)
+                      }
+                      className="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(p._id)}
+                      className="btn btn-sm bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
               <tr>
                 <td colSpan="7" className="text-center py-10 text-gray-500">
                   You haven't added any products yet.

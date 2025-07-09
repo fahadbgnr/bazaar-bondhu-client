@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router';
-import { FaBullhorn, FaEdit, FaHome, FaPlusCircle } from 'react-icons/fa';
-import BBLogo from '../Pages/Shared/BBLogo/BBLogo';
+import { FaBullhorn, FaChartLine, FaEdit, FaHome, FaListAlt, FaPlusCircle } from 'react-icons/fa';
+
 
 const DashboardLayout = () => {
     return (
@@ -62,6 +62,7 @@ const DashboardLayout = () => {
                             Dashboard Home
                         </NavLink>
                     </li>
+                    {/* vendor  */}
 
                     {/* Add Product */}
                     <li>
@@ -92,19 +93,6 @@ const DashboardLayout = () => {
                     </li>
                     <li>
                         <NavLink
-                            to="/dashboard/products/update/:id"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            <FaEdit />
-                            Update Product
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
                             to="/dashboard/advertisements/add"
                             className={({ isActive }) =>
                                 isActive
@@ -116,6 +104,39 @@ const DashboardLayout = () => {
                             Add Advertisement
                         </NavLink>
                     </li>
+
+                    {/* user */}
+
+                    <li>
+                        <NavLink
+                            to="/dashboard/price-trends"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                            }
+                        >
+                            <FaChartLine className="text-xl" />
+                            Price Trends
+                        </NavLink>
+                    </li>
+
+                    {/* New: Manage Watchlist */}
+                    <li>
+                        <NavLink
+                            to="/dashboard/manage-watchlist"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                            }
+                        >
+                            <FaListAlt />
+                            Manage Watchlist
+                        </NavLink>
+                    </li>
+
+
 
                 </ul>
             </div>

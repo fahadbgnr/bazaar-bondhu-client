@@ -1,10 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/useAuth';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import { toast } from 'react-toastify';
 
 const LogIn = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -13,12 +15,15 @@ const LogIn = () => {
   const { signIn } = useAuth();
 
   const onSubmit = (data) => {
-    console.log(data);
     signIn(data.email, data.password)
       .then((result) => {
-        console.log(result.user);
+        toast.success('Login successful');
+        navigate('/'); // Or any protected route
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        toast.error('Login failed');
+      });
   };
 
   return (
