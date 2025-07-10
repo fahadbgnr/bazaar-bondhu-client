@@ -1,9 +1,14 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router';
-import { FaBullhorn, FaChartLine, FaEdit, FaHome, FaListAlt, FaPlusCircle } from 'react-icons/fa';
+import { FaBoxOpen, FaBullhorn, FaChartLine, FaClipboardList, FaHome, FaListAlt, FaPlusCircle, FaUsers, FaUserShield } from 'react-icons/fa';
+import useUserRole from '../hooks/useUserRole';
 
 
 const DashboardLayout = () => {
+
+    const { role, roleLoading } = useUserRole();
+    console.log(role)
+
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -135,9 +140,78 @@ const DashboardLayout = () => {
                             Manage Watchlist
                         </NavLink>
                     </li>
+                    {/* admin */}
+                    { !roleLoading && role === 'admin' &&
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/makeAdmin"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaUserShield />
+                                    Admin Panel
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/all-users"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaUsers /> {/* Users icon */}
+                                    All Users
+                                </NavLink>
+                            </li>
+                            {/* all product admin */}
+                            <li>
+                                <NavLink
+                                    to="/dashboard/all-products"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaBoxOpen /> {/* Product icon */}
+                                    All Products
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/all-advertisements"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaBullhorn /> {/* Advertisement icon */}
+                                    All Advertisements
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/all-orders"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaClipboardList /> {/* Orders icon */}
+                                    All Orders
+                                </NavLink>
+                            </li>
 
-
-
+                        </>
+                    }
                 </ul>
             </div>
         </div>

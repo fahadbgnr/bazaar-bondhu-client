@@ -22,56 +22,66 @@ const SignUp = () => {
   const from = location.state?.from || '/';
 
   const onSubmit = data => {
-    console.log(data);
-
     createUser(data.email, data.password)
       .then(async (result) => {
-        console.log(result.user);
-
-        // update userinfo in the database
         const userInfo = {
           email: data.email,
-          role: 'user', // default role
+          role: 'user',
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString()
+        };
+
+        try {
+          const userRes = await axiosInstance.post('/users', userInfo);
+
+          const userProfile = {
+            displayName: data.name,
+            photoURL: profilePic
+          };
+
+          updateUserProfile(userProfile)
+            .then(() => {
+              toast.success('🎉 Account created successfully!', {
+                position: 'top-right',
+                autoClose: 3000,
+                pauseOnHover: true,
+              });
+              navigate(from);
+            })
+            .catch(error => {
+              toast.error('❌ Profile update failed', {
+                position: 'top-right',
+                autoClose: 3000,
+                pauseOnHover: true,
+              });
+            });
+
+        } catch (err) {
+          toast.error('❌ Failed to save user in database', {
+            position: 'top-right',
+            autoClose: 3000,
+            pauseOnHover: true,
+          });
         }
-
-        const userRes = await axiosInstance.post('/users', userInfo);
-        console.log(userRes.data);
-
-        // update user profile in firebase
-        const userProfile = {
-          displayName: data.name,
-          photoURL: profilePic
-        }
-        updateUserProfile(userProfile)
-          .then(() => {
-            console.log('profile name pic updated')
-            navigate(from);
-          })
-          .catch(error => {
-            console.log(error)
-          })
-
       })
       .catch(error => {
-        console.error(error);
-      })
-  }
+        toast.error('❌ Account creation failed', {
+          position: 'top-right',
+          autoClose: 3000,
+          pauseOnHover: true,
+        });
+      });
+  };
+
   const handleImageUpload = async (e) => {
     const image = e.target.files[0];
-    console.log(image)
-
     const formData = new FormData();
     formData.append('image', image);
 
-
-    const imagUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`
-    const res = await axios.post(imagUploadUrl, formData)
-
+    const imagUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_UPLOAD_KEY}`;
+    const res = await axios.post(imagUploadUrl, formData);
     setProfilePic(res.data.data.url);
-
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-green-50">
@@ -98,9 +108,11 @@ const SignUp = () => {
               {/* Photo */}
               <div>
                 <label className="label">Your Photo</label>
-                <input type="file"
+                <input
+                  type="file"
                   onChange={handleImageUpload}
-                  className="input" placeholder="Your Profile picture" />
+                  className="input"
+                />
               </div>
 
               {/* Email */}
@@ -137,8 +149,10 @@ const SignUp = () => {
               </div>
 
               {/* Submit */}
-              <button className="w-full px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold transition mt-2">
-                SignUp
+              <button
+                className="w-full px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold transition mt-2"
+              >
+                Sign Up
               </button>
             </fieldset>
 

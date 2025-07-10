@@ -13,6 +13,13 @@ import UpdateProduct from "../Pages/DashBoard/VendorDashBoard/UpdateProduct/Upda
 import AdvertisementsPage from "../Pages/DashBoard/VendorDashBoard/AdvertisementsPage/AdvertisementsPage";
 import PriceTrendChart from "../Pages/DashBoard/UserDashboard/PriceTrendChart/PriceTrendChart";
 import ManageWatchlist from "../Pages/DashBoard/UserDashboard/ManageWatchlist/ManageWatchlist";
+import MakeAdmin from "../Pages/DashBoard/MakeAdmin/MakeAdmin";
+import AllUser from "../Pages/DashBoard/AllUser/AllUser";
+import AllProductsAdmin from "../Pages/DashBoard/AllProductsAdmin/AllProductsAdmin";
+import AllAdvertisementsAdmin from "../Pages/DashBoard/AdminAdvertisementsTable/AdminAdvertisementsTable";
+import AllOrder from "../Pages/DashBoard/AllOrder/AllOrder";
+import Forbidden from "../Pages/Forbidden/Forbidden";
+import AdminRoute from "../routes/AdminRoute";
 
 
 
@@ -30,6 +37,11 @@ export const router = createBrowserRouter([
                 Component: AllProducts
             },
             {
+                path: 'forbidden',
+                Component: Forbidden
+
+            },
+            {
                 path: 'login',
                 Component: LogIn
             },
@@ -45,40 +57,73 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: 'add-product',
-                        element: <PrivateRoute>
+                        element:
                             <AddProducts></AddProducts>
-                        </PrivateRoute>
+
                     },
                     {
                         path: 'my-products',
-                        element: <PrivateRoute>
+                        element:
                             <ViewMyProduct></ViewMyProduct>
-                        </PrivateRoute>
+
                     },
                     {
                         path: 'products/update/:id',
-                        element: <PrivateRoute>
+                        element:
                             <UpdateProduct></UpdateProduct>
-                        </PrivateRoute>
+
 
                     },
                     {
                         path: 'advertisements/add',
-                        element: <PrivateRoute>
+                        element:
                             <AdvertisementsPage></AdvertisementsPage>
-                        </PrivateRoute>
+
                     },
                     {
                         path: '/dashboard/price-trends',
-                        element: <PrivateRoute>
+                        element:
                             <PriceTrendChart></PriceTrendChart>
-                        </PrivateRoute>
+
                     },
                     {
                         path: 'manage-watchlist',
-                        element: <PrivateRoute>
+                        element:
                             <ManageWatchlist></ManageWatchlist>
-                        </PrivateRoute>
+
+                    },
+                    {
+                        path: 'makeAdmin',
+                        element: <AdminRoute>
+                            <MakeAdmin></MakeAdmin>
+                        </AdminRoute>
+                    },
+                    {
+
+                        path: 'all-users',
+                        element: <AdminRoute>
+                            <AllUser></AllUser>
+                        </AdminRoute>
+
+                    },
+                    {
+                        path: 'all-products',
+                        element: <AdminRoute>
+                            <AllProductsAdmin></AllProductsAdmin>
+                        </AdminRoute>
+                    },
+                    {
+                        path: 'all-advertisements',
+                        element: <AdminRoute>
+                            <AllAdvertisementsAdmin></AllAdvertisementsAdmin>
+                        </AdminRoute>
+
+                    },
+                    {
+                        path: 'all-orders',
+                        element: <AdminRoute>
+                            <AllOrder></AllOrder>
+                        </AdminRoute>
                     }
                 ]
             },

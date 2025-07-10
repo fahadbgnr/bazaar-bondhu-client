@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
+import React, { useEffect, useState, useContext } from 'react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext/AuthContext'; // make sure this is correct
+import useAxios from '../../hooks/useAxios';
+
 
 const AllProducts = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosInstance = useAxios();
+  const { user } = useContext(AuthContext); 
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [sort, setSort] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -17,7 +23,7 @@ const AllProducts = () => {
       if (endDate) params.endDate = endDate;
       if (sort) params.sort = sort;
 
-      const res = await axiosSecure.get('/products', { params });
+      const res = await axiosInstance.get('/products', { params });
       setProducts(res.data);
     } catch (error) {
       console.error('Error loading products', error);
@@ -28,7 +34,6 @@ const AllProducts = () => {
     fetchProducts();
   }, [startDate, endDate, sort]);
 
-  // Framer motion animation variants
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
@@ -36,6 +41,15 @@ const AllProducts = () => {
       y: 0,
       transition: { duration: 0.4, delay: i * 0.05 },
     }),
+  };
+
+  // handle view details
+  const handleViewDetails = (id) => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      navigate(`/product-details/${id}`);
+    }
   };
 
   return (
@@ -103,6 +117,14 @@ const AllProducts = () => {
                 <p className="text-sm text-gray-600">📅 {format(new Date(product.date), 'yyyy-MM-dd')}</p>
                 <p className="text-sm text-gray-600">🏪 {product.marketName}</p>
                 <p className="text-sm text-gray-600">👨‍🌾 {product.vendorName}</p>
+
+                {/* 🔍 View Details Button */}
+                <button
+                  onClick={() => handleViewDetails(product._id)}
+                  className="mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                >
+                  🔍 View Details
+                </button>
               </div>
             </motion.div>
           ))

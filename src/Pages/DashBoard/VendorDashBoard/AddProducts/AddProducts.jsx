@@ -6,10 +6,12 @@ import { AuthContext } from '../../../../contexts/AuthContext/AuthContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
 
 const AddProducts = () => {
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
   const [priceHistory, setPriceHistory] = useState([]);
   const [priceDate, setPriceDate] = useState(new Date());
@@ -67,6 +69,7 @@ const AddProducts = () => {
         });
         reset({ date: new Date() });
         setPriceHistory([]);
+        navigate('/dashboard/my-products');
       }
     } catch (error) {
       console.error('❌ Error adding product:', error);
