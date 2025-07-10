@@ -20,6 +20,7 @@ import AllAdvertisementsAdmin from "../Pages/DashBoard/AdminAdvertisementsTable/
 import AllOrder from "../Pages/DashBoard/AllOrder/AllOrder";
 import Forbidden from "../Pages/Forbidden/Forbidden";
 import AdminRoute from "../routes/AdminRoute";
+import DashboardHome from "../Pages/DashBoard/DashboardHome/DashboardHome";
 
 
 
@@ -55,6 +56,11 @@ export const router = createBrowserRouter([
                     <DashboardLayout></DashboardLayout>
                 </PrivateRoute>,
                 children: [
+                    {
+                        index: true,
+                        Component: DashboardHome
+
+                    },
                     {
                         path: 'add-product',
                         element:

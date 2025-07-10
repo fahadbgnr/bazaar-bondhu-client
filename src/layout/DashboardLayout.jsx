@@ -57,91 +57,98 @@ const DashboardLayout = () => {
                     <li>
                         <NavLink
                             to="/dashboard"
+                            end
                             className={({ isActive }) =>
                                 isActive
                                     ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
                                     : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
                             }
                         >
-                            <FaHome />
+                            <FaHome className="text-lg" /> 
                             Dashboard Home
                         </NavLink>
                     </li>
-                    {/* vendor  */}
 
-                    {/* Add Product */}
-                    <li>
-                        <NavLink
-                            to="/dashboard/add-product"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            <FaPlusCircle />
-                            Add Product
-                        </NavLink>
-                    </li>
-                    {/* View My Products */}
-                    <li>
-                        <NavLink
-                            to="/dashboard/my-products"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            📦 View My Products
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/dashboard/advertisements/add"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            <FaPlusCircle />
-                            Add Advertisement
-                        </NavLink>
-                    </li>
+
+                    {/* vendor  */}
+                    {!roleLoading && role === 'vendor' &&
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/add-product"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaPlusCircle />
+                                    Add Product
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/my-products"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    📦 View My Products
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/advertisements/add"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaPlusCircle />
+                                    Add Advertisement
+                                </NavLink>
+                            </li>
+                        </>
+                    }
 
                     {/* user */}
+                    {!roleLoading && role === 'user' &&
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/price-trends"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaChartLine className="text-xl" />
+                                    Price Trends
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/dashboard/manage-watchlist"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaListAlt />
+                                    Manage Watchlist
+                                </NavLink>
+                            </li>
+                        </>
+                    }
 
-                    <li>
-                        <NavLink
-                            to="/dashboard/price-trends"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            <FaChartLine className="text-xl" />
-                            Price Trends
-                        </NavLink>
-                    </li>
 
-                    {/* New: Manage Watchlist */}
-                    <li>
-                        <NavLink
-                            to="/dashboard/manage-watchlist"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
-                                    : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
-                            }
-                        >
-                            <FaListAlt />
-                            Manage Watchlist
-                        </NavLink>
-                    </li>
                     {/* admin */}
-                    { !roleLoading && role === 'admin' &&
+                    {!roleLoading && role === 'admin' &&
                         <>
                             <li>
                                 <NavLink
