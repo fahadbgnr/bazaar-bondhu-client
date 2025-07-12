@@ -95,7 +95,7 @@ const PriceTrendChart = () => {
     >
       <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center text-indigo-700">📈 Local Market Price Trend</h2>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-6 my-10">
         {/* Sidebar - Item list */}
         <div className="md:w-1/4">
           <h3 className="font-semibold mb-3 text-slate-700">🛒 Tracked Items</h3>

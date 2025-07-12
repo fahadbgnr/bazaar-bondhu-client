@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import { toast } from 'react-toastify';
@@ -19,6 +19,7 @@ const DetailsPage = () => {
   const [newReview, setNewReview] = useState({ rating: 0, comment: '' });
   const [comparisonDate, setComparisonDate] = useState('');
   const [priceHistory, setPriceHistory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosSecure.get(`/products/${id}`)
@@ -45,6 +46,7 @@ const DetailsPage = () => {
     try {
       await axiosSecure.post('/watchlist', { productId: id, userEmail: user.email });
       toast.success('Added to watchlist');
+      navigate('/dashboard/manage-watchlist');
     } catch {
       toast.error('Failed to add to watchlist');
     } finally {
@@ -52,17 +54,46 @@ const DetailsPage = () => {
     }
   };
 
-  const handleBuyProduct = async () => {
-    if (!user) return toast.error('Please log in');
-    setBuyLoading(true);
-    try {
-      const { data } = await axiosSecure.post('/create-payment-session', { productId: id, userEmail: user.email });
-      window.location.href = data.url;
-    } catch {
-      toast.error('Payment initiation failed');
-      setBuyLoading(false);
+  // const handleBuyProduct = async () => {
+  //   if (!user) return toast.error('Please log in');
+
+  //   setBuyLoading(true);
+  //   try {
+  //     // const { data } = await axiosSecure.post('/create-payment-session', {
+  //     //   productId: id,
+  //     //   userEmail: user.email,
+  //     // });
+
+  //     if (data?.url) {
+  //       window.location.href = data.url;
+  //       navigate(`/dashboard/payment/${id}`);
+  //     } else {
+  //       toast.error('Invalid payment URL received');
+  //     }
+  //   } catch (error) {
+  //     toast.error('Payment initiation failed');
+  //     console.error(error);
+  //   } finally {
+  //     setBuyLoading(false);
+  //   }
+  // };
+
+
+  const handleBuyProduct = () => {
+    if (!user) {
+      toast.error('Please log in');
+      return;
     }
+
+    // তুমি চাইলে লোডিং সেট করতে পারো
+    setBuyLoading(true);
+
+    // এখানে সরাসরি রিডাইরেক্ট করো প্রোডাক্টের আইডি নিয়ে
+    navigate(`/dashboard/payment/${id}`);
+
+    setBuyLoading(false);
   };
+
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
@@ -106,17 +137,26 @@ const DetailsPage = () => {
 
       <div className="grid grid-cols-1 gap-6 mt-6">
         {/* Item list */}
-        <div>
+        <div c>
           <h3 className="text-2xl font-semibold mb-2">🧺 Item List</h3>
-          <ul className="space-y-2">
-            {Array.isArray(product.items) && product.items.map((item, idx) => (
-              <li key={idx} className="flex justify-between border p-3 rounded shadow-sm">
-                <span>🧅 {item.name}</span>
-                <span>৳{item.price} / {item.unit}</span>
+          <ul className="space-y-2 bg-green-50">
+            {Array.isArray(product.items) && product.items.length > 0 ? (
+              product.items.map((item, idx) => (
+                <li key={idx} className="flex justify-between border p-3 rounded shadow-sm">
+                  <span> {item.name}</span>
+                  <span>৳{item.price} / {item.unit}</span>
+                </li>
+              ))
+            ) : (
+
+              <li className="flex justify-between border p-3 rounded shadow-sm">
+                <span> {product.itemName}</span>
+                <span>৳{product.pricePerUnit}</span>
               </li>
-            ))}
+            )}
           </ul>
         </div>
+
 
         {/* Vendor info and buttons */}
         <div className="space-y-6">
@@ -136,7 +176,7 @@ const DetailsPage = () => {
             </button>
 
             <button
-              onClick={handleBuyProduct}
+              onClick={() => handleBuyProduct(product._id)}
               disabled={buyLoading}
               className="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >

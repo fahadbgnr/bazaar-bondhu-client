@@ -17,7 +17,6 @@ const ManageWatchlist = () => {
   useEffect(() => {
     const fetchWatchlist = async () => {
       if (!user?.email) return;
-
       try {
         setLoading(true);
         const res = await axiosSecure.get(`/watchlist?email=${user.email}`);
@@ -28,13 +27,11 @@ const ManageWatchlist = () => {
         setLoading(false);
       }
     };
-
     fetchWatchlist();
   }, [axiosSecure, user?.email]);
 
   const handleRemove = async () => {
     if (!removeId || !user?.email) return;
-
     try {
       await axiosSecure.delete(`/watchlist/${removeId}?email=${user.email}`);
       setWatchlist(prev => prev.filter(item => item._id !== removeId));
@@ -55,21 +52,16 @@ const ManageWatchlist = () => {
   };
 
   if (loading) {
-    return (
-      <div className="text-center py-20 text-gray-600 font-semibold">
-        Loading your watchlist...
-      </div>
-    );
+    return <div className="text-center py-20 text-gray-600 font-semibold">Loading your watchlist...</div>;
   }
 
   if (!watchlist.length) {
     return (
-      <div className="text-center py-20 text-gray-500 font-medium">
-        Your watchlist is empty.
-        <br />
+      <div className="text-center py-20 text-gray-500 font-medium space-y-4">
+        <p>Your watchlist is empty.</p>
         <button
           onClick={() => navigate('/allProducts')}
-          className="mt-4 px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+          className="px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
         >
           Browse Products
         </button>
@@ -78,39 +70,40 @@ const ManageWatchlist = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Your Watchlist</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse border border-gray-200">
-          <thead className="bg-indigo-100 text-indigo-700">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800 text-center">📋 Your Watchlist</h1>
+
+      <div className="overflow-auto rounded-lg shadow bg-white">
+        <table className="min-w-full text-sm text-left border-collapse">
+          <thead className="bg-indigo-100 text-indigo-700 text-sm sm:text-base">
             <tr>
-              <th className="border border-gray-300 px-4 py-2 text-left">Product Name</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Market Name</th>
-              <th className="border border-gray-300 px-4 py-2 text-left">Date</th>
-              <th className="border border-gray-300 px-4 py-2 text-center">Actions</th>
+              <th className="px-4 py-3 border border-gray-200">Product</th>
+              <th className="px-4 py-3 border border-gray-200">Market</th>
+              <th className="px-4 py-3 border border-gray-200">Date</th>
+              <th className="px-4 py-3 border border-gray-200 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-gray-700">
             {watchlist.map(({ _id, itemName, marketName, date }) => (
-              <tr key={_id} className="hover:bg-indigo-50">
-                <td className="border border-gray-300 px-4 py-2 capitalize">{itemName}</td>
-                <td className="border border-gray-300 px-4 py-2">{marketName}</td>
-                <td className="border border-gray-300 px-4 py-2">{date}</td>
-                <td className="border border-gray-300 px-4 py-2 flex justify-center gap-2">
-                  <button
-                    onClick={() => navigate('/allProducts')}
-                    className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition"
-                    title="Add More Products"
-                  >
-                    ➕ Add More
-                  </button>
-                  <button
-                    onClick={() => openModal(_id)}
-                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                    title="Remove from Watchlist"
-                  >
-                    ❌ Remove
-                  </button>
+              <tr key={_id} className="hover:bg-indigo-50 transition">
+                <td className="px-4 py-3 border border-gray-200 capitalize">{itemName}</td>
+                <td className="px-4 py-3 border border-gray-200">{marketName}</td>
+                <td className="px-4 py-3 border border-gray-200">{date}</td>
+                <td className="px-4 py-3 border border-gray-200">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <button
+                      onClick={() => navigate('/allProducts')}
+                      className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs sm:text-sm"
+                    >
+                      ➕ Add More
+                    </button>
+                    <button
+                      onClick={() => openModal(_id)}
+                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs sm:text-sm"
+                    >
+                      ❌ Remove
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

@@ -23,6 +23,8 @@ import AdminRoute from "../routes/AdminRoute";
 import DashboardHome from "../Pages/DashBoard/DashboardHome/DashboardHome";
 import VendorRoute from "../routes/VendorRoute";
 import DetailsPage from "../Pages/AllProducts/DetailsPage";
+import MyOrderList from "../Pages/DashBoard/UserDashboard/MyOrderList/MyOrderList";
+import Payment from "../Pages/DashBoard/UserDashboard/Payment/Payment";
 
 
 
@@ -102,9 +104,9 @@ export const router = createBrowserRouter([
 
 
                     },
-
+                    // user only routes
                     {
-                        path: '/dashboard/price-trends',
+                        path: 'price-trends',
                         element:
                             <PriceTrendChart></PriceTrendChart>
 
@@ -114,6 +116,14 @@ export const router = createBrowserRouter([
                         element:
                             <ManageWatchlist></ManageWatchlist>
 
+                    },
+                    {
+                        path: 'myOrderList',
+                        element: <MyOrderList></MyOrderList>
+                    },
+                    {
+                        path: "payment/:id",
+                        element: <Payment></Payment>
                     },
 
                     // Admin only routes

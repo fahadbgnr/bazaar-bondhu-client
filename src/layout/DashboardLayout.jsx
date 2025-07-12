@@ -64,7 +64,7 @@ const DashboardLayout = () => {
                                     : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
                             }
                         >
-                            <FaHome className="text-lg" /> 
+                            <FaHome className="text-lg" />
                             Dashboard Home
                         </NavLink>
                     </li>
@@ -141,6 +141,20 @@ const DashboardLayout = () => {
                                 >
                                     <FaListAlt />
                                     Manage Watchlist
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink
+                                    to="/dashboard/myOrderList" 
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'bg-green-600 text-white rounded-md px-3 py-2 flex items-center gap-2 font-semibold'
+                                            : 'hover:bg-green-200 rounded-md px-3 py-2 flex items-center gap-2 transition-colors'
+                                    }
+                                >
+                                    <FaClipboardList className="text-lg" />
+                                    My Orders
                                 </NavLink>
                             </li>
                         </>
