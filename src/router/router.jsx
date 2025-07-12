@@ -21,6 +21,8 @@ import AllOrder from "../Pages/DashBoard/AllOrder/AllOrder";
 import Forbidden from "../Pages/Forbidden/Forbidden";
 import AdminRoute from "../routes/AdminRoute";
 import DashboardHome from "../Pages/DashBoard/DashboardHome/DashboardHome";
+import VendorRoute from "../routes/VendorRoute";
+import DetailsPage from "../Pages/AllProducts/DetailsPage";
 
 
 
@@ -36,6 +38,12 @@ export const router = createBrowserRouter([
             {
                 path: 'allProducts',
                 Component: AllProducts
+            },
+            {
+                path: 'detailsPage/:id',
+                element: <PrivateRoute>
+                    <DetailsPage></DetailsPage>
+                </PrivateRoute>
             },
             {
                 path: 'forbidden',
@@ -61,18 +69,32 @@ export const router = createBrowserRouter([
                         Component: DashboardHome
 
                     },
+                    // vendor only routes
                     {
                         path: 'add-product',
                         element:
-                            <AddProducts></AddProducts>
+                            <VendorRoute>
+                                <AddProducts></AddProducts>
+                            </VendorRoute>
 
                     },
                     {
                         path: 'my-products',
                         element:
-                            <ViewMyProduct></ViewMyProduct>
+                            <VendorRoute>
+                                <ViewMyProduct></ViewMyProduct>
+                            </VendorRoute>
 
                     },
+                    {
+                        path: 'advertisements/add',
+                        element:
+                            <VendorRoute>
+                                <AdvertisementsPage></AdvertisementsPage>
+                            </VendorRoute>
+
+                    },
+
                     {
                         path: 'products/update/:id',
                         element:
@@ -80,12 +102,7 @@ export const router = createBrowserRouter([
 
 
                     },
-                    {
-                        path: 'advertisements/add',
-                        element:
-                            <AdvertisementsPage></AdvertisementsPage>
 
-                    },
                     {
                         path: '/dashboard/price-trends',
                         element:
@@ -98,6 +115,8 @@ export const router = createBrowserRouter([
                             <ManageWatchlist></ManageWatchlist>
 
                     },
+
+                    // Admin only routes
                     {
                         path: 'makeAdmin',
                         element: <AdminRoute>

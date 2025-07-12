@@ -48,7 +48,7 @@ const AllProducts = () => {
     if (!user) {
       navigate('/login');
     } else {
-      navigate(`/product-details/${id}`);
+      navigate(`/detailsPage/${id}`);
     }
   };
 

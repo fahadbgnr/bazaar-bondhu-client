@@ -4,11 +4,13 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import { toast } from 'react-toastify';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import useUserRole from '../../hooks/useUserRole';
 
 const DetailsPage = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
+  const { role, roleLoading } = useUserRole();
 
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -19,13 +21,25 @@ const DetailsPage = () => {
   const [priceHistory, setPriceHistory] = useState([]);
 
   useEffect(() => {
-    axiosSecure.get(`/products/${id}`).then(res => setProduct(res.data)).catch(() => toast.error('Failed to load product'));
-    axiosSecure.get(`/products/${id}/reviews`).then(res => setReviews(res.data)).catch(() => toast.error('Failed to load reviews'));
+    axiosSecure.get(`/products/${id}`)
+      .then(res => setProduct(res.data))
+      .catch(() => toast.error('Failed to load product'));
+
+    axiosSecure.get(`/products/${id}/reviews`)
+      .then(res => setReviews(res.data))
+      .catch(() => toast.error('Failed to load reviews'));
   }, [id]);
+
+  useEffect(() => {
+    if (!comparisonDate) return;
+    axiosSecure.get(`/products/${id}/price-history`, { params: { date: comparisonDate } })
+      .then(res => setPriceHistory(res.data))
+      .catch(() => toast.error('Failed to load price comparison'));
+  }, [comparisonDate, id]);
 
   const handleAddToWatchlist = async () => {
     if (!user) return toast.error('Please log in');
-    if (user.role === 'admin' || user.role === 'vendor') return;
+    if (role === 'admin' || role === 'vendor') return;
 
     setWatchlistLoading(true);
     try {
@@ -40,7 +54,6 @@ const DetailsPage = () => {
 
   const handleBuyProduct = async () => {
     if (!user) return toast.error('Please log in');
-
     setBuyLoading(true);
     try {
       const { data } = await axiosSecure.post('/create-payment-session', { productId: id, userEmail: user.email });
@@ -73,105 +86,130 @@ const DetailsPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (!comparisonDate) return;
-    axiosSecure.get(`/products/${id}/price-history`, { params: { date: comparisonDate } })
-      .then(res => setPriceHistory(res.data))
-      .catch(() => toast.error('Failed to load price comparison'));
-  }, [comparisonDate, id]);
-
-  if (!product) return <p>Loading...</p>;
+  if (roleLoading) return <div className="text-center py-10 text-xl">Loading user role...</div>;
+  if (!product) return <div className="text-center py-10 text-xl">Loading product details...</div>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-6">
-      <h2 className="text-3xl font-bold">{product.marketName} 🏪</h2>
-      <img src={product.image} alt={product.itemName} className="w-full max-h-96 object-cover rounded-lg" />
-      <p>📅 Date: {new Date(product.date).toLocaleDateString()}</p>
-
-      <div>
-        <h3 className="text-xl font-semibold">Items and Prices:</h3>
-        <ul className="list-disc list-inside">
-          {product.items.map((item, idx) => (
-            <li key={idx}>🧅 {item.name} — ৳{item.price}/{item.unit}</li>
-          ))}
-        </ul>
+    <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      {/* Market name and date */}
+      <div className="text-center">
+        <h2 className="text-4xl font-bold mb-2">{product.marketName} 🏪</h2>
+        <p className="text-gray-600">📅 {new Date(product.date).toLocaleDateString()}</p>
       </div>
 
-      <p>👨‍🌾 Vendor: {product.vendorName} ({product.vendorEmail})</p>
+      {/* Product image */}
+      <img
+        src={product.image}
+        alt={product.itemName}
+        className="max-w-full object-cover rounded-xl shadow-md"
+      />
 
-      <button
-        disabled={user?.role === 'admin' || user?.role === 'vendor' || watchlistLoading}
-        onClick={handleAddToWatchlist}
-        className={`px-4 py-2 rounded text-white ${
-          user?.role === 'admin' || user?.role === 'vendor' ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
-        }`}
-      >
-        ⭐ Add to Watchlist
-      </button>
+      <div className="grid grid-cols-1 gap-6 mt-6">
+        {/* Item list */}
+        <div>
+          <h3 className="text-2xl font-semibold mb-2">🧺 Item List</h3>
+          <ul className="space-y-2">
+            {Array.isArray(product.items) && product.items.map((item, idx) => (
+              <li key={idx} className="flex justify-between border p-3 rounded shadow-sm">
+                <span>🧅 {item.name}</span>
+                <span>৳{item.price} / {item.unit}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <button
-        onClick={handleBuyProduct}
-        disabled={buyLoading}
-        className="ml-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-      >
-        🛒 Buy Product
-      </button>
+        {/* Vendor info and buttons */}
+        <div className="space-y-6">
+          <div className="border p-4 rounded shadow-sm bg-green-50">
+            <h3 className="text-xl font-semibold mb-2">👨‍🌾 Vendor Info</h3>
+            <p className="mb-1"><strong>Name:</strong> {product.vendorName}</p>
+            <p><strong>Email:</strong> {product.vendorEmail}</p>
+          </div>
 
+          <div className="flex flex-wrap gap-4">
+            <button
+              disabled={role === 'admin' || role === 'vendor' || watchlistLoading}
+              onClick={handleAddToWatchlist}
+              className={`px-4 py-2 rounded text-white ${role === 'admin' || role === 'vendor' ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+            >
+              ⭐ Add to Watchlist
+            </button>
+
+            <button
+              onClick={handleBuyProduct}
+              disabled={buyLoading}
+              className="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              🛒 Buy Product
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
       <section>
-        <h3 className="text-2xl font-bold mt-8">Reviews & Comments 💬</h3>
-        <ul>
+        <h3 className="text-2xl font-bold">💬 Reviews</h3>
+        <div className="space-y-4 mt-4">
           {reviews.map(r => (
-            <li key={r._id} className="border p-3 rounded my-2">
-              <p><strong>{r.userName}</strong> ({r.userEmail}) - <em>{new Date(r.date).toLocaleDateString()}</em></p>
-              <p>⭐ {r.rating} / 5</p>
+            <div key={r._id} className="p-4 border rounded shadow-sm">
+              <div className="flex justify-between text-sm text-gray-600 mb-1">
+                <span><strong>{r.userName}</strong> ({r.userEmail})</span>
+                <span>{new Date(r.date).toLocaleDateString()}</span>
+              </div>
+              <p className="text-yellow-600 font-medium">⭐ {r.rating} / 5</p>
               <p>{r.comment}</p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
 
         {user ? (
-          <form onSubmit={handleSubmitReview} className="mt-6 space-y-4">
-            <label>
-              Star Rating:
+          <form onSubmit={handleSubmitReview} className="mt-6 bg-green-50 p-4 rounded shadow space-y-4">
+            <div>
+              <label className="block mb-1 font-semibold">⭐ Star Rating:</label>
               <select
                 value={newReview.rating}
                 onChange={e => setNewReview({ ...newReview, rating: Number(e.target.value) })}
-                className="ml-2 border rounded p-1"
+                className="w-full border p-2 rounded"
               >
                 <option value={0}>Select rating</option>
                 {[1, 2, 3, 4, 5].map(n => (
                   <option key={n} value={n}>{n}</option>
                 ))}
               </select>
-            </label>
-            <label>
-              Comment:
+            </div>
+
+            <div>
+              <label className="block mb-1 font-semibold">📝 Comment:</label>
               <textarea
                 value={newReview.comment}
                 onChange={e => setNewReview({ ...newReview, comment: e.target.value })}
-                className="block w-full border rounded p-2 mt-1"
-                rows={3}
-                placeholder="Write your review here..."
+                className="w-full border p-2 rounded"
+                rows={4}
+                placeholder="Write your honest review here..."
               />
-            </label>
-            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Submit Review</button>
+            </div>
+
+            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+              Submit Review
+            </button>
           </form>
         ) : (
-          <p className="text-red-600 mt-4">Please log in to leave a review.</p>
+          <p className="text-red-500 mt-4">🔒 Please log in to leave a review.</p>
         )}
       </section>
 
+      {/* Price Comparison Chart */}
       <section className="mt-10">
-        <h3 className="text-2xl font-bold">Price Comparison with Previous Dates 📊</h3>
-        <label>
-          Select Date:{' '}
+        <h3 className="text-2xl font-bold mb-3">📊 Price Comparison</h3>
+        <div className="mb-4">
+          <label className="mr-2 font-medium">Select Date:</label>
           <input
             type="date"
             value={comparisonDate}
             onChange={e => setComparisonDate(e.target.value)}
-            className="border p-1 rounded"
+            className="border p-2 rounded"
           />
-        </label>
+        </div>
 
         {priceHistory.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
@@ -183,7 +221,7 @@ const DetailsPage = () => {
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <p>No data for selected date.</p>
+          <p className="text-gray-500">No data available for the selected date.</p>
         )}
       </section>
     </div>

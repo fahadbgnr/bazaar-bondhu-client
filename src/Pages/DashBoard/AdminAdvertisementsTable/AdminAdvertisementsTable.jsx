@@ -11,7 +11,7 @@ const AllAdvertisementsAdmin = () => {
   const { data: ads = [], isLoading } = useQuery({
     queryKey: ['all-ads'],
     queryFn: async () => {
-      const res = await axiosSecure.get('/all-advertisements'); // Ensure this route exists in your backend
+      const res = await axiosSecure.get('/all-advertisements'); 
       return res.data;
     },
   });
