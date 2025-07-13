@@ -80,8 +80,8 @@ swiper
 tailwindcss
 
 ```
-Dev Dependencies:
 
+# Dev Dependencies:
 bash
 Copy
 Edit
