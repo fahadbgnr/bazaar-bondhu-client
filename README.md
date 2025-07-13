@@ -78,3 +78,27 @@ slick-carousel
 sweetalert2
 swiper
 tailwindcss
+
+```
+Dev Dependencies:
+
+bash
+Copy
+Edit
+@vitejs/plugin-react
+eslint
+daisyui
+vite
+@eslint/js
+eslint-plugin-react-hooks
+eslint-plugin-react-refresh
+
+
+
+# Clone and install
+git clone https://github.com/fahadbgnr/bazaar-bondhu.git
+cd bazaar-bondhu
+npm install
+
+# Start the dev server
+npm run dev
