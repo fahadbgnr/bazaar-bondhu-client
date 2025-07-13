@@ -8,12 +8,16 @@ import AdvertisementCarousel from '../AdvertisementCarousel/AdvertisementCarouse
 const Home = () => {
     return (
         <div>
-            <Banner></Banner>
-            <ProductSection></ProductSection>
-            <AdvertisementCarousel></AdvertisementCarousel>
-            <HowItWorks></HowItWorks>
-            <WhyChooseUs></WhyChooseUs>
-            
+            <div className='mb-16'>
+                <Banner></Banner>
+            </div>
+            <div className='mb-16'>
+                <ProductSection></ProductSection>
+                <AdvertisementCarousel></AdvertisementCarousel>
+                <HowItWorks></HowItWorks>
+                <WhyChooseUs></WhyChooseUs>
+            </div>
+
         </div>
     );
 };

@@ -32,6 +32,7 @@ const NavBar = () => {
             timer: 3000,
             timerProgressBar: true,
           });
+          window.location.reload();
         } catch (error) {
           console.error(error);
           Swal.fire({

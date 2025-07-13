@@ -12,18 +12,30 @@ const ViewMyProduct = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 6;
 
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/products?vendorEmail=${encodeURIComponent(user.email)}`)
-        .then((res) => setProducts(res.data))
+        .get(`/products`, {
+          params: {
+            vendorEmail: user.email,
+            page,
+            limit,
+          },
+        })
+        .then((res) => {
+          setProducts(res.data.products || []);
+          setTotalPages(res.data.totalPages || 1);
+        })
         .catch((err) => {
           console.error(err);
           toast.error('Failed to fetch products');
         });
     }
-  }, [user, axiosSecure]);
+  }, [user, axiosSecure, page]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -76,7 +88,7 @@ const ViewMyProduct = () => {
             </tr>
           </thead>
           <tbody>
-            {products.length > 0 ? (
+            {products && products.length > 0 ? (
               products.map((p, i) => (
                 <motion.tr
                   key={p._id}
@@ -85,29 +97,32 @@ const ViewMyProduct = () => {
                   transition={{ delay: i * 0.05 }}
                   className="hover:bg-green-50 border-t"
                 >
-                  <td>{i + 1}</td>
+                  <td>{(page - 1) * limit + i + 1}</td>
                   <td>{p.itemName}</td>
-                  <td>৳{p.pricePerUnit.toFixed(2)}</td>
+                  <td>৳{p.pricePerUnit?.toFixed(2)}</td>
                   <td>{p.marketName}</td>
-                  <td>{p.date}</td>
+                  <td>{p.date ? new Date(p.date).toLocaleDateString() : 'N/A'}</td>
                   <td className="capitalize">
                     <span
-                      className={`px-2 py-1 rounded-full text-sm ${
-                        p.status === 'approved'
+                      className={`px-2 py-1 rounded-full text-sm ${p.status === 'approved'
                           ? 'bg-green-200 text-green-800'
                           : p.status === 'rejected'
-                          ? 'bg-red-200 text-red-800'
-                          : 'bg-yellow-200 text-yellow-800'
-                      }`}
+                            ? 'bg-red-200 text-red-800'
+                            : 'bg-yellow-200 text-yellow-800'
+                        }`}
                     >
                       {p.status}
                     </span>
+                    {p.status === 'rejected' && (
+                      <div className="mt-1 text-xs text-red-700 bg-red-50 p-2 rounded">
+                        <p><strong>Reason:</strong> {p.rejectionReason || 'Not provided'}</p>
+                        <p><strong>Feedback:</strong> {p.rejectionFeedback || 'No feedback'}</p>
+                      </div>
+                    )}
                   </td>
                   <td className="space-x-2 text-center">
                     <button
-                      onClick={() =>
-                        navigate(`/dashboard/products/update/${p._id}`)
-                      }
+                      onClick={() => navigate(`/dashboard/products/update/${p._id}`)}
                       className="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       Update
@@ -130,6 +145,36 @@ const ViewMyProduct = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+
+      <div className="flex justify-center items-center gap-4 mt-6">
+        <button
+          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          disabled={page === 1}
+          className={`btn btn-sm transition duration-300 ${page === 1
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
+        >
+          Previous
+        </button>
+
+        <span className="font-medium text-green-800">
+          Page {page} of {totalPages}
+        </span>
+
+        <button
+          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          disabled={page === totalPages}
+          className={`btn btn-sm transition duration-300 ${page === totalPages
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
+        >
+          Next
+        </button>
       </div>
     </motion.div>
   );

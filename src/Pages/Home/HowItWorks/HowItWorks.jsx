@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const HowItWorks = () => {
   return (
     <section className="bg-white py-16 px-6 text-center">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-3xl sm:text-4xl font-bold text-gray-800 mb-8"
           initial={{ opacity: 0, y: -30 }}

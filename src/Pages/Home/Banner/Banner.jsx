@@ -1,11 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
 import BannerPic from '../../../assets/BannerPic.png';
 
 const Banner = () => {
+  const navigate = useNavigate();
+
+  const handleExplore = () => {
+    navigate('/allProducts');
+  };
+
   return (
     <section
-      className="relative w-full min-h-screen flex items-center justify-center text-center px-6 bg-cover bg-center"
+      className="relative w-full min-h-[400px] sm:min-h-[600px] md:min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 md:px-12 py-12 sm:py-20 bg-cover bg-center"
       style={{
         backgroundImage: `url(${BannerPic})`,
       }}
@@ -18,18 +25,19 @@ const Banner = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="relative max-w-4xl text-white space-y-8 px-4 sm:px-8"
+        className="relative max-w-4xl text-white space-y-6 sm:space-y-8 px-2 sm:px-4 md:px-8"
       >
-        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-wide drop-shadow-[0_4px_6px_rgba(0,0,0,0.7)]">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-wide drop-shadow-[0_4px_6px_rgba(0,0,0,0.7)] leading-tight">
           Get Fresh & Local Market Prices Daily
         </h1>
-        <p className="text-xl sm:text-2xl font-medium tracking-wide drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)]">
+        <p className="text-base sm:text-lg md:text-xl font-medium tracking-wide drop-shadow-[0_3px_5px_rgba(0,0,0,0.5)] max-w-3xl mx-auto">
           Stay updated with the freshest produce prices from your nearby markets.
         </p>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-green-600 hover:bg-green-700 transition px-10 py-4 rounded-md font-semibold shadow-lg text-lg sm:text-xl"
+          onClick={handleExplore}
+          className="bg-green-600 hover:bg-green-700 transition px-6 sm:px-10 py-3 sm:py-4 rounded-md font-semibold shadow-lg text-base sm:text-lg md:text-xl mx-auto block"
         >
           Explore Prices
         </motion.button>

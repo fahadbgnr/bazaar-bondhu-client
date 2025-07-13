@@ -14,7 +14,7 @@ const AdvertisementCarousel = () => {
     const fetchAds = async () => {
       try {
         const res = await axiosInstance.get('/advertisements/current');
-        console.log('Fetched advertisements:', res.data); // Debug
+        // console.log('Fetched advertisements:', res.data); // Debug
         setAds(res.data);
       } catch (error) {
         console.error('Failed to load advertisements:', error);

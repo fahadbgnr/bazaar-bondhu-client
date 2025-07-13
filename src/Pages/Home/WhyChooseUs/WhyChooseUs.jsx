@@ -28,7 +28,7 @@ const WhyChooseUs = () => {
 
   return (
     <section className="py-16 px-6 text-center">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-3xl sm:text-4xl font-bold text-gray-800 mb-10"
           initial={{ opacity: 0, y: -30 }}

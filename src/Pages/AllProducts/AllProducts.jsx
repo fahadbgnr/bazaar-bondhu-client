@@ -147,17 +147,25 @@ const AllProducts = () => {
         <button
           onClick={handlePrevPage}
           disabled={page === 1}
-          className={`btn btn-sm ${page === 1 ? 'btn-disabled' : 'btn-primary'}`}
+          className={`btn btn-sm transition duration-300 ${page === 1
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
         >
           Prev
         </button>
-        <span>
+
+        <span className="text-green-800 font-medium">
           Page <strong>{page}</strong> of <strong>{totalPages}</strong>
         </span>
+
         <button
           onClick={handleNextPage}
           disabled={page === totalPages}
-          className={`btn btn-sm ${page === totalPages ? 'btn-disabled' : 'btn-primary'}`}
+          className={`btn btn-sm transition duration-300 ${page === totalPages
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+            }`}
         >
           Next
         </button>
