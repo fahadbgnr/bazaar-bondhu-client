@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { FaBoxOpen, FaBullhorn, FaChartLine, FaClipboardList, FaHome, FaListAlt, FaPlusCircle, FaUsers, FaUserShield } from 'react-icons/fa';
 import useUserRole from '../hooks/useUserRole';
+import { Helmet } from 'react-helmet-async';
 
 
 const DashboardLayout = () => {
@@ -11,6 +12,11 @@ const DashboardLayout = () => {
 
     return (
         <div className="drawer lg:drawer-open">
+            <Helmet>
+                <title>
+                    BB | DashBoard
+                </title>
+            </Helmet>
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
             {/* Main content */}

@@ -7,6 +7,7 @@ import { AuthContext } from '../../../../contexts/AuthContext/AuthContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
+import { Helmet } from 'react-helmet-async';
 
 const UpdateProduct = () => {
     const { id } = useParams();
@@ -28,7 +29,7 @@ const UpdateProduct = () => {
     // Fetch existing product data
     useEffect(() => {
         axiosSecure.get(`/products/${id}`).then((res) => {
-            console.log('Fetched product:', res.data); 
+            console.log('Fetched product:', res.data);
             const product = res.data;
 
             if (product) {
@@ -105,6 +106,11 @@ const UpdateProduct = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
         >
+            <Helmet>
+                <title>
+                    BB|UpdateProduct
+                </title>
+            </Helmet>
             <h2 className="text-4xl font-bold mb-8 text-green-700 text-center">Update Product</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

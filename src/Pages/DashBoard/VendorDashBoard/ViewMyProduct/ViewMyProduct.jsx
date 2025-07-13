@@ -5,6 +5,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 
 const ViewMyProduct = () => {
   const { user } = useContext(AuthContext);
@@ -70,6 +71,11 @@ const ViewMyProduct = () => {
       animate={{ opacity: 1, transition: { duration: 0.5 } }}
       className="overflow-x-auto p-4"
     >
+      <Helmet>
+        <title>
+          BB|VendorDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-3xl font-bold mb-6 text-green-700 text-center">
         My Products
       </h2>
@@ -105,10 +111,10 @@ const ViewMyProduct = () => {
                   <td className="capitalize">
                     <span
                       className={`px-2 py-1 rounded-full text-sm ${p.status === 'approved'
-                          ? 'bg-green-200 text-green-800'
-                          : p.status === 'rejected'
-                            ? 'bg-red-200 text-red-800'
-                            : 'bg-yellow-200 text-yellow-800'
+                        ? 'bg-green-200 text-green-800'
+                        : p.status === 'rejected'
+                          ? 'bg-red-200 text-red-800'
+                          : 'bg-yellow-200 text-yellow-800'
                         }`}
                     >
                       {p.status}
@@ -154,8 +160,8 @@ const ViewMyProduct = () => {
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1}
           className={`btn btn-sm transition duration-300 ${page === 1
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 text-white'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700 text-white'
             }`}
         >
           Previous
@@ -169,8 +175,8 @@ const ViewMyProduct = () => {
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           disabled={page === totalPages}
           className={`btn btn-sm transition duration-300 ${page === totalPages
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 text-white'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700 text-white'
             }`}
         >
           Next

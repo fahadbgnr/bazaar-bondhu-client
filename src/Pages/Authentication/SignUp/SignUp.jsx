@@ -6,6 +6,7 @@ import SocialLogin from '../SocialLogin/SocialLogin';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import useAxios from '../../../hooks/useAxios';
+import { Helmet } from 'react-helmet-async';
 
 const SignUp = () => {
   const {
@@ -90,6 +91,9 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-green-50">
+      <Helmet>
+        <title>BB | SignUp</title>
+      </Helmet>
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <div className="card-body">
           <h1 className="text-4xl font-bold text-center mb-4">Create Account</h1>

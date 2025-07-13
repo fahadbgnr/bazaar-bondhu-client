@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useRouteError } from 'react-router';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const ErrorPage = () => {
     const error = useRouteError();
@@ -12,6 +13,11 @@ const ErrorPage = () => {
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="relative backdrop-blur-md bg-white/40 border border-white/30 rounded-3xl p-10 shadow-xl w-full max-w-xl text-center"
             >
+                <Helmet>
+                    <title>
+                        BB | ErrorPage
+                    </title>
+                </Helmet>
                 <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-green-400 via-lime-400 to-emerald-500 opacity-30 blur-lg z-0"></div>
 
                 <div className="relative z-10">

@@ -3,35 +3,36 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaSearch, FaUserShield, FaUserTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const MakeAdmin = () => {
   const axiosSecure = useAxiosSecure();
   const [emailQuery, setEmailQuery] = useState("");
 
-  
+
   const {
     data: users = [],
     refetch,
     isFetching,
   } = useQuery({
     queryKey: ["searchedUsers", emailQuery],
-    enabled: !!emailQuery, 
+    enabled: !!emailQuery,
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/search?email=${emailQuery}`);
       return res.data;
     },
   });
 
-  // মিউটেশন: ইউজারের রোল আপডেট করা
+
   const { mutateAsync: updateRole } = useMutation({
     mutationFn: async ({ id, role }) =>
       await axiosSecure.patch(`/users/${id}/role`, { role }),
     onSuccess: () => {
-      refetch(); // রোল আপডেট হয়ে গেলে ইউজার লিস্ট রিফ্রেশ করো
+      refetch();
     },
   });
 
-  // রোল চেঞ্জের হ্যান্ডলার ফাংশন
+
   const handleRoleChange = async (id, currentRole) => {
     const action = currentRole === "admin" ? "Remove admin" : "Make admin";
     const newRole = currentRole === "admin" ? "user" : "admin";
@@ -57,6 +58,11 @@ const MakeAdmin = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>
+          BB|AdminDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-2xl font-semibold mb-4">Make Admin</h2>
 
       <div className="flex gap-2 mb-6 items-center">
@@ -94,9 +100,8 @@ const MakeAdmin = () => {
                   <td>{new Date(u.created_at || u.createdAt).toLocaleDateString()}</td>
                   <td>
                     <span
-                      className={`badge ${
-                        u.role === "admin" ? "badge-success" : "badge-ghost"
-                      }`}
+                      className={`badge ${u.role === "admin" ? "badge-success" : "badge-ghost"
+                        }`}
                     >
                       {u.role || "user"}
                     </span>
@@ -104,9 +109,8 @@ const MakeAdmin = () => {
                   <td>
                     <button
                       onClick={() => handleRoleChange(u._id, u.role || "user")}
-                      className={`btn btn-sm text-black ${
-                        u.role === "admin" ? "btn-error" : "btn-primary"
-                      }`}
+                      className={`btn btn-sm text-black ${u.role === "admin" ? "btn-error" : "btn-primary"
+                        }`}
                     >
                       {u.role === "admin" ? (
                         <>

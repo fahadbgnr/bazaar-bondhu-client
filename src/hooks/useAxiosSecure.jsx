@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 
 
 const axiosSecure = axios.create({
-    baseURL: `http://localhost:5000`
+    baseURL: `https://bazaar-bondhu-server.vercel.app`
 });
 
 const useAxiosSecure = () => {

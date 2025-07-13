@@ -5,6 +5,7 @@ import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import { toast } from 'react-toastify';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import useUserRole from '../../hooks/useUserRole';
+import { Helmet } from 'react-helmet-async';
 
 const DetailsPage = () => {
   const { id } = useParams();
@@ -93,6 +94,11 @@ const DetailsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+      <Helmet>
+        <title>
+          BB | ProductDetails
+        </title>
+      </Helmet>
       {/* Market name and date */}
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-2">{product.marketName} 🏪</h2>

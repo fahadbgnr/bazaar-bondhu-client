@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { Helmet } from 'react-helmet-async';
 
 const AllOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -28,7 +29,11 @@ const AllOrder = () => {
       <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center text-green-700">
         📦 All Orders (Admin)
       </h2>
-
+      <Helmet>
+        <title>
+          BB|AdminDashBoard
+        </title>
+      </Helmet>
       <div className="overflow-x-auto bg-white rounded-2xl shadow-lg">
         <table className="min-w-[600px] sm:min-w-full table-auto border-collapse border border-gray-200 w-full text-xs sm:text-sm md:text-base">
           <thead className="bg-green-100 text-gray-700">

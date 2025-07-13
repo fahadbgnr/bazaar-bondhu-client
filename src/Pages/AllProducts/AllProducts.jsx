@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import useAxios from '../../hooks/useAxios';
+import { Helmet } from 'react-helmet-async';
 
 const AllProducts = () => {
   const axiosInstance = useAxios();
@@ -66,6 +67,9 @@ const AllProducts = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
+      <Helmet>
+        <title>BB | AllProducts</title>
+      </Helmet>
       <h2 className="text-3xl font-bold text-center text-green-700 mb-10">
         🛍️ Explore Fresh Market Products
       </h2>
@@ -148,8 +152,8 @@ const AllProducts = () => {
           onClick={handlePrevPage}
           disabled={page === 1}
           className={`btn btn-sm transition duration-300 ${page === 1
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 text-white'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700 text-white'
             }`}
         >
           Prev
@@ -163,8 +167,8 @@ const AllProducts = () => {
           onClick={handleNextPage}
           disabled={page === totalPages}
           className={`btn btn-sm transition duration-300 ${page === totalPages
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 text-white'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700 text-white'
             }`}
         >
           Next

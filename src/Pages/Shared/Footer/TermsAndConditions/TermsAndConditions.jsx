@@ -1,8 +1,14 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const TermsAndConditions = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 my-12 bg-green-50 rounded shadow-md">
+        <Helmet>
+            <title>
+                BB|TermsAndConditions
+            </title>
+        </Helmet>
       <h1 className="text-3xl font-bold mb-6 text-green-700">Terms & Conditions</h1>
 
       <p className="mb-4">

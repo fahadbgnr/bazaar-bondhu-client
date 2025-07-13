@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import useAuth from '../../../../hooks/useAuth';
+import { Helmet } from 'react-helmet-async';
 
 const MyOrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -25,6 +26,11 @@ const MyOrderList = () => {
 
   return (
     <div className="p-2 sm:p-6 max-w-7xl mx-auto space-y-10">
+      <Helmet>
+        <title>
+          BB|UserDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-2xl font-bold text-center mb-6">🧾 My Order List</h2>
 
       {/* Responsive table wrapper */}

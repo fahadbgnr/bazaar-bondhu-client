@@ -4,6 +4,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import AddAdvertisementForm from './AddAdvertisementForm';
+import { Helmet } from 'react-helmet-async';
 
 
 const AdvertisementsPage = () => {
@@ -100,6 +101,11 @@ const AdvertisementsPage = () => {
 
     return (
         <div className="max-w-6xl mx-auto py-10 px-5">
+            <Helmet>
+                <title>
+                    BB|VendorDashBoard
+                </title>
+            </Helmet>
             <h1 className="text-4xl font-bold text-green-700 mb-10 text-center">
                 Manage Advertisements
             </h1>

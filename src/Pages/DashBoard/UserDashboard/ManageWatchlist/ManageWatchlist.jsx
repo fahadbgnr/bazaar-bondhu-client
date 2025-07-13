@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext } from '../../../../contexts/AuthContext/AuthContext';
+import { Helmet } from 'react-helmet-async';
 
 const ManageWatchlist = () => {
   const axiosSecure = useAxiosSecure();
@@ -71,6 +72,11 @@ const ManageWatchlist = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <Helmet>
+        <title>
+          BB|UserDashBoard
+        </title>
+      </Helmet>
       <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800 text-center">📋 Your Watchlist</h1>
 
       <div className="overflow-auto rounded-lg shadow bg-white">

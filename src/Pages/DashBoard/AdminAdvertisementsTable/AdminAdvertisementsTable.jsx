@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { Helmet } from 'react-helmet-async';
 
 const AllAdvertisementsAdmin = () => {
   const axiosSecure = useAxiosSecure();
@@ -59,6 +60,11 @@ const AllAdvertisementsAdmin = () => {
 
   return (
     <div className="p-6">
+      <Helmet>
+        <title>
+          BB|AdminDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-4">📢 All Advertisements (Admin)</h2>
       <div className="overflow-x-auto">
         <table className="table w-full table-zebra">

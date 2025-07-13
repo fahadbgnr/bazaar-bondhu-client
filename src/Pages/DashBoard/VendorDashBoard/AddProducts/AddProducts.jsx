@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router';
+import { Helmet } from 'react-helmet-async';
 
 const AddProducts = () => {
   const { user } = useContext(AuthContext);
@@ -88,6 +89,11 @@ const AddProducts = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
+      <Helmet>
+        <title>
+          BB|VendorDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-4xl font-bold mb-8 text-green-700 text-center">Add Product</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

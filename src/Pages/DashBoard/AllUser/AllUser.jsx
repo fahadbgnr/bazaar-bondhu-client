@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 // Debounce Hook
 function useDebounce(value, delay) {
@@ -73,6 +74,11 @@ const AllUser = () => {
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+      <Helmet>
+        <title>
+          BB|AdminDashBoard
+        </title>
+      </Helmet>
       <h2 className="text-2xl font-bold mb-6 text-green-700 text-center">
         👥 All Users
       </h2>
@@ -117,13 +123,12 @@ const AllUser = () => {
                   </td>
                   <td className="px-4 py-2 text-center">
                     <span
-                      className={`badge ${
-                        user.role === "admin"
+                      className={`badge ${user.role === "admin"
                           ? "badge-success"
                           : user.role === "vendor"
-                          ? "badge-info"
-                          : "badge-ghost"
-                      }`}
+                            ? "badge-info"
+                            : "badge-ghost"
+                        }`}
                     >
                       {user.role || "user"}
                     </span>
