@@ -34,11 +34,11 @@ const SignUp = () => {
 
         try {
           const userRes = await axiosInstance.post('/users', userInfo);
-          if (userRes.data?.insertedId) {
-            toast.success('✅ User saved in database');
-          } else {
-            toast.warn('⚠️ User already exists or not saved');
-          }
+          // if (userRes.data?.insertedId) {
+          //   toast.success('✅ User saved in database');
+          // } else {
+          //   toast.warn('⚠️ User already exists or not saved');
+          // }
 
           const userProfile = {
             displayName: data.name,
