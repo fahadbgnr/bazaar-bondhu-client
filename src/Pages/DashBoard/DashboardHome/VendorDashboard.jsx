@@ -13,18 +13,16 @@ const VendorDashboard = () => {
   useEffect(() => {
     const fetchVendorStats = async () => {
       try {
-        const [productRes, adRes] = await Promise.all([
-          axiosSecure.get(`/products?vendorEmail=${user?.email}`),
-          axiosSecure.get(`/advertisements?vendorEmail=${user?.email}`)
-        ]);
+        const res = await axiosSecure.get('/vendor-stats');
+        console.log('Vendor stats response:', res.data); // Optional: for debugging
 
         setStats({
-          productCount: productRes.data.length,
-          adCount: adRes.data.length
+          productCount: res.data.productsAdded || 0,
+          adCount: res.data.advertisementsCreated || 0,
         });
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching vendor stats:", error);
+      } finally {
         setLoading(false);
       }
     };
