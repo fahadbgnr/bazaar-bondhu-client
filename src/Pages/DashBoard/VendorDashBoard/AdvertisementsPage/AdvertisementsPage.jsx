@@ -157,7 +157,7 @@ const AdvertisementsPage = () => {
                                                     setSelectedAd(ad);
                                                     setShowDeleteModal(true);
                                                 }}
-                                                className="btn btn-sm bg-green-600 text-white hover:bg-green-700 px-6"
+                                                className="btn btn-sm bg-red-600 text-white hover:bg-red-700 px-6"
                                             >
                                                 Delete
                                             </button>

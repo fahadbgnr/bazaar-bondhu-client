@@ -1,73 +1,72 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-
-const AllOrders = () => {
+const AllOrder = () => {
   const [orders, setOrders] = useState([]);
-  const axiosSecure = useAxiosSecure(); 
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchAllOrders = async () => {
       try {
-        const res = await axiosSecure.get('/orders'); // ✅ secured endpoint call
+        const res = await axiosSecure.get('/admin/all-orders');
         setOrders(res.data);
-      } catch (err) {
-        console.error('Failed to fetch orders:', err);
+      } catch (error) {
+        console.error('Failed to fetch all orders:', error);
       }
     };
-    fetchOrders();
+    fetchAllOrders();
   }, [axiosSecure]);
 
   return (
-    <section className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">📦 All Orders</h2>
+    <motion.div
+      className="p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 max-w-full mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center text-green-700">
+        📦 All Orders (Admin)
+      </h2>
 
-      {orders.length === 0 ? (
-        <p className="text-gray-500 italic">No orders found.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg">
-            <thead className="bg-gray-100 text-gray-700">
+      <div className="overflow-x-auto bg-white rounded-2xl shadow-lg">
+        <table className="min-w-[600px] sm:min-w-full table-auto border-collapse border border-gray-200 w-full text-xs sm:text-sm md:text-base">
+          <thead className="bg-green-100 text-gray-700">
+            <tr>
+              <th className="text-left py-2 px-3 border border-gray-300">🧅 Product</th>
+              <th className="text-left py-2 px-3 border border-gray-300">🛒 Market</th>
+              <th className="text-left py-2 px-3 border border-gray-300">📧 Email</th>
+              <th className="text-right py-2 px-3 border border-gray-300">৳ Price</th>
+              <th className="text-left py-2 px-3 border border-gray-300">🔁 Transaction ID</th>
+              <th className="text-left py-2 px-3 border border-gray-300">📅 Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.length === 0 ? (
               <tr>
-                <th className="px-4 py-2 border">#</th>
-                <th className="px-4 py-2 border">Order ID</th>
-                <th className="px-4 py-2 border">Customer</th>
-                <th className="px-4 py-2 border">Date</th>
-                <th className="px-4 py-2 border">Status</th>
-                <th className="px-4 py-2 border">Total</th>
+                <td colSpan="6" className="text-center py-6 text-gray-500">
+                  No orders found.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, index) => (
-                <tr key={order._id || index} className="text-center hover:bg-gray-50">
-                  <td className="px-4 py-2 border">{index + 1}</td>
-                  <td className="px-4 py-2 border">{order._id}</td>
-                  <td className="px-4 py-2 border">{order.customerName || 'N/A'}</td>
-                  <td className="px-4 py-2 border">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    <span className={`px-2 py-1 rounded-full text-sm ${
-                      order.status === 'Pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : order.status === 'Completed'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-200 text-gray-700'
-                    }`}>
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 border">
-                    ${order.total?.toFixed(2) || '0.00'}
+            ) : (
+              orders.map(order => (
+                <tr key={order.transactionId} className="hover:bg-gray-50">
+                  <td className="py-2 px-3 border border-gray-300 capitalize">{order.itemName}</td>
+                  <td className="py-2 px-3 border border-gray-300 capitalize">{order.marketName}</td>
+                  <td className="py-2 px-3 border border-gray-300 break-words max-w-[150px]">{order.email}</td>
+                  <td className="py-2 px-3 border border-gray-300 text-right whitespace-nowrap">৳{order.amount}</td>
+                  <td className="py-2 px-3 border border-gray-300 break-all max-w-[160px]">{order.transactionId}</td>
+                  <td className="py-2 px-3 border border-gray-300 whitespace-nowrap">
+                    {new Date(order.paid_at).toLocaleDateString()}
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </section>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </motion.div>
   );
 };
 
-export default AllOrders;
+export default AllOrder;
