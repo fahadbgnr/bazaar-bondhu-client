@@ -1,6 +1,5 @@
 # 🛒 BazaarBondhu
 
-**Live Site:** [https://bazaar-bondhu.web.app](https://bazaar-bondhu.web.app)
 
 BazaarBondhu is a modern local market price tracker and freelance marketplace platform. It helps vendors post daily market updates, customers to track price trends, and admins to manage users, products, and ads — all with secure Firebase authentication and a responsive, animation-rich dashboard.
 
