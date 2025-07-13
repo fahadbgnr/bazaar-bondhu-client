@@ -1,0 +1,40 @@
+import React from 'react';
+
+const TermsAndConditions = () => {
+  return (
+    <div className="max-w-4xl mx-auto p-6 my-12 bg-green-50 rounded shadow-md">
+      <h1 className="text-3xl font-bold mb-6 text-green-700">Terms & Conditions</h1>
+
+      <p className="mb-4">
+        Welcome to our website! By accessing or using our services, you agree to be bound by these Terms and Conditions.
+      </p>
+
+      <h2 className="text-xl font-semibold mb-2">1. Use of Service</h2>
+      <p className="mb-4">
+        You agree to use our service only for lawful purposes and in a way that does not infringe the rights of others.
+      </p>
+
+      <h2 className="text-xl font-semibold mb-2">2. User Responsibilities</h2>
+      <p className="mb-4">
+        You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account.
+      </p>
+
+      <h2 className="text-xl font-semibold mb-2">3. Product Information</h2>
+      <p className="mb-4">
+        We strive to provide accurate product information, but we do not guarantee that all data is complete, reliable, or error-free.
+      </p>
+
+      <h2 className="text-xl font-semibold mb-2">4. Limitation of Liability</h2>
+      <p className="mb-4">
+        We are not liable for any direct, indirect, incidental, or consequential damages arising out of your use of our services.
+      </p>
+
+      <h2 className="text-xl font-semibold mb-2">6. Contact Us</h2>
+      <p className="mb-4">
+        If you have any questions about these Terms & Conditions, please contact us at support@yourcompany.com.
+      </p>
+    </div>
+  );
+};
+
+export default TermsAndConditions;

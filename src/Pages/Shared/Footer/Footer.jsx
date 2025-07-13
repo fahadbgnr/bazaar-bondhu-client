@@ -15,8 +15,8 @@ const Footer = () => {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold mb-3 text-green-700">Contact Us</h3>
-          <p className="text-sm">Email: support@bazaarbondhu.com</p>
-          <p className="text-sm">Phone: +880 1234-567890</p>
+          <p className="text-sm">Email: aminulislamfahad1@gmail.com</p>
+          <p className="text-sm">Phone: +880 1959792191</p>
           <p className="text-sm">Dhaka, Bangladesh</p>
         </div>
 
@@ -25,7 +25,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-3 text-green-700">Legal</h3>
           <ul className="space-y-1 text-sm">
             <li>
-              <Link to="/terms" className="hover:text-green-600 transition">
+              <Link to="/termCondition" className="hover:text-green-600 transition">
                 Terms & Conditions
               </Link>
             </li>
@@ -42,7 +42,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold mb-3 text-green-700">Follow Us</h3>
           <div className="flex space-x-4 text-2xl">
             <a
-              href="https://github.com/your-github-username"
+              href="https://github.com/fahadbgnr"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-green-600 transition"
@@ -50,7 +50,7 @@ const Footer = () => {
               <FaGithub />
             </a>
             <a
-              href="https://linkedin.com/in/your-linkedin-id"
+              href="https://www.linkedin.com/in/sheikhfahad01/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-green-600 transition"

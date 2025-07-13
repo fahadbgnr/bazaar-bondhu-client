@@ -25,6 +25,9 @@ import VendorRoute from "../routes/VendorRoute";
 import DetailsPage from "../Pages/AllProducts/DetailsPage";
 import MyOrderList from "../Pages/DashBoard/UserDashboard/MyOrderList/MyOrderList";
 import Payment from "../Pages/DashBoard/UserDashboard/Payment/Payment";
+import TermsAndConditions from "../Pages/Shared/Footer/TermsAndConditions/TermsAndConditions";
+import PrivacyPolicy from "../Pages/Shared/Footer/PtivacyPolicy/PrivacyPolicy";
+
 
 
 
@@ -50,6 +53,16 @@ export const router = createBrowserRouter([
             {
                 path: 'forbidden',
                 Component: Forbidden
+
+            },
+            {
+                path: 'termCondition',
+                Component: TermsAndConditions
+
+            },
+            {
+                path: 'privacy',
+                Component: PrivacyPolicy
 
             },
             {
