@@ -1,30 +1,35 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router';
-import { AuthContext } from '../../contexts/AuthContext/AuthContext'; // make sure this is correct
+import { useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import useAxios from '../../hooks/useAxios';
-
 
 const AllProducts = () => {
   const axiosInstance = useAxios();
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [products, setProducts] = useState([]);
   const [sort, setSort] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [page, setPage] = useState(1);           // current page number
+  const [totalPages, setTotalPages] = useState(1); // total pages from backend
+  const limit = 9; // items per page
 
   const fetchProducts = async () => {
     try {
-      const params = {};
+      const params = { page, limit };
       if (startDate) params.startDate = startDate;
       if (endDate) params.endDate = endDate;
       if (sort) params.sort = sort;
 
       const res = await axiosInstance.get('/products', { params });
-      setProducts(res.data);
+
+      setProducts(res.data.products || []); // Assuming API returns { products: [...], totalPages: n }
+      setTotalPages(res.data.totalPages || 1);
     } catch (error) {
       console.error('Error loading products', error);
     }
@@ -32,7 +37,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [startDate, endDate, sort]);
+  }, [startDate, endDate, sort, page]);
 
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -43,13 +48,20 @@ const AllProducts = () => {
     }),
   };
 
-  // handle view details
   const handleViewDetails = (id) => {
     if (!user) {
-      navigate('/login');
+      navigate('/login', { state: { from: { pathname: `/detailsPage/${id}` } } });
     } else {
       navigate(`/detailsPage/${id}`);
     }
+  };
+
+  // Pagination controls
+  const handlePrevPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
+  const handleNextPage = () => {
+    if (page < totalPages) setPage(page + 1);
   };
 
   return (
@@ -118,7 +130,6 @@ const AllProducts = () => {
                 <p className="text-sm text-gray-600">🏪 {product.marketName}</p>
                 <p className="text-sm text-gray-600">👨‍🌾 {product.vendorName}</p>
 
-                {/* 🔍 View Details Button */}
                 <button
                   onClick={() => handleViewDetails(product._id)}
                   className="mt-3 w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
@@ -129,6 +140,27 @@ const AllProducts = () => {
             </motion.div>
           ))
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-8 gap-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={page === 1}
+          className={`btn btn-sm ${page === 1 ? 'btn-disabled' : 'btn-primary'}`}
+        >
+          Prev
+        </button>
+        <span>
+          Page <strong>{page}</strong> of <strong>{totalPages}</strong>
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={page === totalPages}
+          className={`btn btn-sm ${page === totalPages ? 'btn-disabled' : 'btn-primary'}`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

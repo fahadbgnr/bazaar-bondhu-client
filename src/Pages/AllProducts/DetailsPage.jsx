@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 import { toast } from 'react-toastify';
@@ -20,6 +20,7 @@ const DetailsPage = () => {
   const [comparisonDate, setComparisonDate] = useState('');
   const [priceHistory, setPriceHistory] = useState([]);
   const navigate = useNavigate();
+ 
 
   useEffect(() => {
     axiosSecure.get(`/products/${id}`)
@@ -54,43 +55,13 @@ const DetailsPage = () => {
     }
   };
 
-  // const handleBuyProduct = async () => {
-  //   if (!user) return toast.error('Please log in');
-
-  //   setBuyLoading(true);
-  //   try {
-  //     // const { data } = await axiosSecure.post('/create-payment-session', {
-  //     //   productId: id,
-  //     //   userEmail: user.email,
-  //     // });
-
-  //     if (data?.url) {
-  //       window.location.href = data.url;
-  //       navigate(`/dashboard/payment/${id}`);
-  //     } else {
-  //       toast.error('Invalid payment URL received');
-  //     }
-  //   } catch (error) {
-  //     toast.error('Payment initiation failed');
-  //     console.error(error);
-  //   } finally {
-  //     setBuyLoading(false);
-  //   }
-  // };
-
-
   const handleBuyProduct = () => {
     if (!user) {
       toast.error('Please log in');
       return;
     }
-
-    // তুমি চাইলে লোডিং সেট করতে পারো
     setBuyLoading(true);
-
-    // এখানে সরাসরি রিডাইরেক্ট করো প্রোডাক্টের আইডি নিয়ে
     navigate(`/dashboard/payment/${id}`);
-
     setBuyLoading(false);
   };
 
