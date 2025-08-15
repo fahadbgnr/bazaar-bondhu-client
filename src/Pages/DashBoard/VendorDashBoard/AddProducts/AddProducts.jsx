@@ -24,24 +24,24 @@ const AddProducts = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: { date: new Date() },
+  });
 
   const handleAddPrice = () => {
-    if (priceValue) {
-      const formattedDate = priceDate.toISOString().split('T')[0];
-      const newEntry = {
-        date: formattedDate,
-        price: parseFloat(priceValue),
-      };
-      setPriceHistory([...priceHistory, newEntry]);
-      setPriceValue('');
-      setPriceDate(new Date());
+    if (!priceValue) {
+      toast.warning('Please enter a price value');
+      return;
     }
+    const formattedDate = priceDate.toISOString().split('T')[0];
+    const newEntry = { date: formattedDate, price: parseFloat(priceValue) };
+    setPriceHistory((prev) => [...prev, newEntry]);
+    setPriceValue('');
+    setPriceDate(new Date());
   };
 
   const handleRemovePrice = (index) => {
-    const updated = priceHistory.filter((_, i) => i !== index);
-    setPriceHistory(updated);
+    setPriceHistory((prev) => prev.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (data) => {
@@ -63,125 +63,127 @@ const AddProducts = () => {
     try {
       const res = await axiosSecure.post('/products', newProduct);
       if (res.data.insertedId || res.data.acknowledged) {
-        toast.success('✅ Product added successfully!', {
-          position: 'top-right',
-          autoClose: 3000,
-          pauseOnHover: true,
-        });
+        toast.success('✅ Product added successfully!', { autoClose: 3000 });
         reset({ date: new Date() });
         setPriceHistory([]);
         navigate('/dashboard/my-products');
       }
     } catch (error) {
       console.error('❌ Error adding product:', error);
-      toast.error('❌ Failed to add product. Try again.', {
-        position: 'top-right',
-        autoClose: 3000,
-        pauseOnHover: true,
-      });
+      toast.error('❌ Failed to add product. Try again.', { autoClose: 3000 });
     }
   };
 
   return (
     <motion.div
-      className="w-full max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg py-10 my-12"
+      className="w-full max-w-3xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg py-10 my-12"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
       <Helmet>
-        <title>
-          BB|VendorDashBoard
-        </title>
+        <title>BB | Vendor Dashboard</title>
       </Helmet>
-      <h2 className="text-4xl font-bold mb-8 text-green-700 text-center">Add Product</h2>
+
+      <h2 className="text-4xl font-bold mb-8 text-green-700 dark:text-green-400 text-center">
+        Add Product
+      </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Vendor Email */}
         <div>
           <label className="block font-semibold mb-2">Vendor Email</label>
           <input
             type="email"
             value={user?.email}
             readOnly
-            className="input input-bordered w-full bg-gray-100"
+            className="input input-bordered w-full bg-gray-100 dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
 
+        {/* Vendor Name */}
         <div>
           <label className="block font-semibold mb-2">Vendor Name</label>
           <input
             type="text"
             value={user?.displayName || ''}
             readOnly
-            className="input input-bordered w-full bg-gray-100"
+            className="input input-bordered w-full bg-gray-100 dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
 
+        {/* Market Name */}
         <div>
           <label className="block font-semibold mb-2">Market Name</label>
           <input
             type="text"
             {...register('marketName', { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           />
           {errors.marketName && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
+        {/* Date */}
         <div>
           <label className="block font-semibold mb-2">Date</label>
           <Controller
             control={control}
             name="date"
-            defaultValue={new Date()}
             render={({ field }) => (
               <DatePicker
                 selected={field.value}
                 onChange={field.onChange}
-                className="input input-bordered w-full"
+                className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-200"
                 dateFormat="yyyy-MM-dd"
               />
             )}
           />
         </div>
 
+        {/* Market Description */}
         <div>
           <label className="block font-semibold mb-2">Market Description</label>
           <textarea
             {...register('marketDescription', { required: true })}
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           ></textarea>
           {errors.marketDescription && (
             <p className="text-red-500 text-sm">Description is required</p>
           )}
         </div>
 
+        {/* Item Name */}
         <div>
           <label className="block font-semibold mb-2">Item Name</label>
           <input
             type="text"
             {...register('itemName', { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           />
           {errors.itemName && <p className="text-red-500 text-sm">Required</p>}
         </div>
 
+        {/* Image URL */}
         <div>
           <label className="block font-semibold mb-2">Image URL</label>
           <input
             type="text"
             {...register('image', { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           />
-          {errors.image && <p className="text-red-500 text-sm">Image URL is required</p>}
+          {errors.image && (
+            <p className="text-red-500 text-sm">Image URL is required</p>
+          )}
         </div>
 
+        {/* Price per Unit */}
         <div>
           <label className="block font-semibold mb-2">Price per Unit</label>
           <input
             type="number"
             step="0.01"
             {...register('pricePerUnit', { required: true })}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
 
@@ -192,7 +194,7 @@ const AddProducts = () => {
             <DatePicker
               selected={priceDate}
               onChange={(date) => setPriceDate(date)}
-              className="input input-bordered"
+              className="input input-bordered dark:bg-gray-700 dark:text-gray-200"
               dateFormat="yyyy-MM-dd"
             />
             <input
@@ -201,7 +203,7 @@ const AddProducts = () => {
               value={priceValue}
               onChange={(e) => setPriceValue(e.target.value)}
               placeholder="Price"
-              className="input input-bordered"
+              className="input input-bordered dark:bg-gray-700 dark:text-gray-200"
             />
             <button
               type="button"
@@ -217,7 +219,7 @@ const AddProducts = () => {
               {priceHistory.map((item, index) => (
                 <li
                   key={index}
-                  className="flex items-center justify-between bg-green-50 px-3 py-2 rounded"
+                  className="flex items-center justify-between bg-green-50 dark:bg-green-900 px-3 py-2 rounded"
                 >
                   <span>{item.date} — ৳{item.price}</span>
                   <button
@@ -233,11 +235,12 @@ const AddProducts = () => {
           )}
         </div>
 
+        {/* Item Description */}
         <div>
           <label className="block font-semibold mb-2">Item Description (optional)</label>
           <textarea
             {...register('itemDescription')}
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full dark:bg-gray-700 dark:text-gray-200"
           ></textarea>
         </div>
 

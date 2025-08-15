@@ -9,7 +9,7 @@ const MakeAdmin = () => {
   const axiosSecure = useAxiosSecure();
   const [emailQuery, setEmailQuery] = useState("");
 
-
+  // Fetch users based on email query
   const {
     data: users = [],
     refetch,
@@ -23,7 +23,7 @@ const MakeAdmin = () => {
     },
   });
 
-
+  // Update user role mutation
   const { mutateAsync: updateRole } = useMutation({
     mutationFn: async ({ id, role }) =>
       await axiosSecure.patch(`/users/${id}/role`, { role }),
@@ -32,7 +32,6 @@ const MakeAdmin = () => {
     },
   });
 
-
   const handleRoleChange = async (id, currentRole) => {
     const action = currentRole === "admin" ? "Remove admin" : "Make admin";
     const newRole = currentRole === "admin" ? "user" : "admin";
@@ -40,7 +39,11 @@ const MakeAdmin = () => {
     const confirm = await Swal.fire({
       title: `${action}?`,
       icon: "question",
+      background: "#1e293b", // Dark mode friendly
+      color: "#fff",
       showCancelButton: true,
+      confirmButtonColor: currentRole === "admin" ? "#dc2626" : "#2563eb",
+      cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes",
       cancelButtonText: "Cancel",
     });
@@ -49,44 +52,60 @@ const MakeAdmin = () => {
 
     try {
       await updateRole({ id, role: newRole });
-      Swal.fire("Success", `${action} successful`, "success");
+      Swal.fire({
+        title: "Success",
+        text: `${action} successful`,
+        icon: "success",
+        background: "#1e293b",
+        color: "#fff",
+      });
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", "Failed to update user role", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Failed to update user role",
+        icon: "error",
+        background: "#1e293b",
+        color: "#fff",
+      });
     }
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>
-          BB|AdminDashBoard
-        </title>
+        <title>BB | Admin Dashboard</title>
       </Helmet>
-      <h2 className="text-2xl font-semibold mb-4">Make Admin</h2>
 
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+        Make Admin
+      </h2>
+
+      {/* Search bar */}
       <div className="flex gap-2 mb-6 items-center">
-        <FaSearch />
+        <FaSearch className="text-gray-500 dark:text-gray-400" />
         <input
           type="text"
-          className="input input-bordered w-full max-w-md"
+          className="input input-bordered w-full max-w-md dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
           placeholder="Search user by email"
           value={emailQuery}
           onChange={(e) => setEmailQuery(e.target.value)}
         />
       </div>
 
-      {isFetching && <p>Loading users...</p>}
+      {isFetching && (
+        <p className="text-gray-600 dark:text-gray-400">Loading users...</p>
+      )}
 
       {!isFetching && users.length === 0 && emailQuery && (
-        <p className="text-gray-500">No users found.</p>
+        <p className="text-gray-500 dark:text-gray-400">No users found.</p>
       )}
 
       {users.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="table w-full table-zebra">
+          <table className="table w-full table-zebra dark:text-gray-200">
             <thead>
-              <tr>
+              <tr className="dark:bg-gray-800">
                 <th>Email</th>
                 <th>Created At</th>
                 <th>Role</th>
@@ -95,13 +114,18 @@ const MakeAdmin = () => {
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u._id}>
+                <tr key={u._id} className="dark:hover:bg-gray-800">
                   <td>{u.email}</td>
-                  <td>{new Date(u.created_at || u.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    {new Date(u.created_at || u.createdAt).toLocaleDateString()}
+                  </td>
                   <td>
                     <span
-                      className={`badge ${u.role === "admin" ? "badge-success" : "badge-ghost"
-                        }`}
+                      className={`badge ${
+                        u.role === "admin"
+                          ? "badge-success"
+                          : "badge-ghost dark:text-gray-300"
+                      }`}
                     >
                       {u.role || "user"}
                     </span>
@@ -109,8 +133,11 @@ const MakeAdmin = () => {
                   <td>
                     <button
                       onClick={() => handleRoleChange(u._id, u.role || "user")}
-                      className={`btn btn-sm text-black ${u.role === "admin" ? "btn-error" : "btn-primary"
-                        }`}
+                      className={`btn btn-sm ${
+                        u.role === "admin"
+                          ? "btn-error"
+                          : "btn-primary dark:bg-blue-600"
+                      }`}
                     >
                       {u.role === "admin" ? (
                         <>

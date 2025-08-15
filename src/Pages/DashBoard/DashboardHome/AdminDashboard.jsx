@@ -12,9 +12,16 @@ const AdminDashboard = () => {
       .catch(err => console.error('Error fetching stats', err));
   }, [axiosSecure]);
 
-  if (!stats) return <p className="text-center">Loading admin stats...</p>;
+  if (!stats) return <p className="text-center text-gray-700 dark:text-gray-300">Loading admin stats...</p>;
 
   const { users, products } = stats;
+
+  const cardStyles = "rounded-xl p-6 shadow-lg text-gray-800 dark:text-gray-200";
+  const bgStyles = {
+    users: "bg-green-100 dark:bg-green-800",
+    approved: "bg-blue-100 dark:bg-blue-800",
+    rejected: "bg-red-100 dark:bg-red-800",
+  };
 
   return (
     <motion.div
@@ -23,21 +30,24 @@ const AdminDashboard = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <div className="bg-green-100 rounded-xl p-6 shadow-lg">
-        <h3 className="text-lg font-semibold mb-1">👥 Total Users</h3>
-        <p>Admin: {users.admin}</p>
-        <p>Vendors: {users.vendor}</p>
-        <p>Users: {users.user}</p>
+      {/* Users Stats */}
+      <div className={`${bgStyles.users} ${cardStyles}`}>
+        <h3 className="text-lg font-semibold mb-2">👥 Total Users</h3>
+        <p>Admin: <span className="font-medium">{users.admin}</span></p>
+        <p>Vendors: <span className="font-medium">{users.vendor}</span></p>
+        <p>Users: <span className="font-medium">{users.user}</span></p>
       </div>
 
-      <div className="bg-blue-100 rounded-xl p-6 shadow-lg">
-        <h3 className="text-lg font-semibold mb-1">✅ Approved Products</h3>
-        <p>Total: {products.approved}</p>
+      {/* Approved Products */}
+      <div className={`${bgStyles.approved} ${cardStyles}`}>
+        <h3 className="text-lg font-semibold mb-2">✅ Approved Products</h3>
+        <p>Total: <span className="font-medium">{products.approved}</span></p>
       </div>
 
-      <div className="bg-red-100 rounded-xl p-6 shadow-lg">
-        <h3 className="text-lg font-semibold mb-1">❌ Rejected Products</h3>
-        <p>Total: {products.rejected}</p>
+      {/* Rejected Products */}
+      <div className={`${bgStyles.rejected} ${cardStyles}`}>
+        <h3 className="text-lg font-semibold mb-2">❌ Rejected Products</h3>
+        <p>Total: <span className="font-medium">{products.rejected}</span></p>
       </div>
     </motion.div>
   );

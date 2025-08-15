@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import useAxiosSecure from '../../../../hooks/useAxiosSecure';
-import { motion, AnimatePresence } from 'framer-motion';
-import { AuthContext } from '../../../../contexts/AuthContext/AuthContext';
-import { Helmet } from 'react-helmet-async';
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { motion, AnimatePresence } from "framer-motion";
+import { AuthContext } from "../../../../contexts/AuthContext/AuthContext";
+import { Helmet } from "react-helmet-async";
 
 const ManageWatchlist = () => {
   const axiosSecure = useAxiosSecure();
@@ -15,6 +15,7 @@ const ManageWatchlist = () => {
   const [removeId, setRemoveId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Fetch watchlist
   useEffect(() => {
     const fetchWatchlist = async () => {
       if (!user?.email) return;
@@ -23,7 +24,7 @@ const ManageWatchlist = () => {
         const res = await axiosSecure.get(`/watchlist?email=${user.email}`);
         setWatchlist(res.data);
       } catch (error) {
-        console.error('Failed to fetch watchlist:', error);
+        console.error("Failed to fetch watchlist:", error);
       } finally {
         setLoading(false);
       }
@@ -31,17 +32,19 @@ const ManageWatchlist = () => {
     fetchWatchlist();
   }, [axiosSecure, user?.email]);
 
+  // Remove item
   const handleRemove = async () => {
     if (!removeId || !user?.email) return;
     try {
       await axiosSecure.delete(`/watchlist/${removeId}?email=${user.email}`);
-      setWatchlist(prev => prev.filter(item => item._id !== removeId));
+      setWatchlist((prev) => prev.filter((item) => item._id !== removeId));
       closeModal();
     } catch (error) {
-      console.error('Failed to remove item:', error);
+      console.error("Failed to remove item:", error);
     }
   };
 
+  // Modal handlers
   const openModal = (id) => {
     setRemoveId(id);
     setModalOpen(true);
@@ -53,15 +56,19 @@ const ManageWatchlist = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-20 text-gray-600 font-semibold">Loading your watchlist...</div>;
+    return (
+      <div className="text-center py-20 text-gray-600 dark:text-gray-300 font-semibold">
+        Loading your watchlist...
+      </div>
+    );
   }
 
   if (!watchlist.length) {
     return (
-      <div className="text-center py-20 text-gray-500 font-medium space-y-4">
+      <div className="text-center py-20 text-gray-500 dark:text-gray-400 font-medium space-y-4">
         <p>Your watchlist is empty.</p>
         <button
-          onClick={() => navigate('/allProducts')}
+          onClick={() => navigate("/allProducts")}
           className="px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
         >
           Browse Products
@@ -73,32 +80,46 @@ const ManageWatchlist = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <Helmet>
-        <title>
-          BB|UserDashBoard
-        </title>
+        <title>BB | User Dashboard</title>
       </Helmet>
-      <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800 text-center">📋 Your Watchlist</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-gray-800 dark:text-gray-100 text-center">
+        📋 Your Watchlist
+      </h1>
 
-      <div className="overflow-auto rounded-lg shadow bg-white">
+      <div className="overflow-auto rounded-lg shadow bg-white dark:bg-gray-800">
         <table className="min-w-full text-sm text-left border-collapse">
-          <thead className="bg-indigo-100 text-indigo-700 text-sm sm:text-base">
+          <thead className="bg-indigo-100 dark:bg-indigo-700 text-indigo-700 dark:text-indigo-100 text-sm sm:text-base">
             <tr>
-              <th className="px-4 py-3 border border-gray-200">Product</th>
-              <th className="px-4 py-3 border border-gray-200">Market</th>
-              <th className="px-4 py-3 border border-gray-200">Date</th>
-              <th className="px-4 py-3 border border-gray-200 text-center">Actions</th>
+              <th className="px-4 py-3 border border-gray-200 dark:border-gray-700">
+                Product
+              </th>
+              <th className="px-4 py-3 border border-gray-200 dark:border-gray-700">
+                Market
+              </th>
+              <th className="px-4 py-3 border border-gray-200 dark:border-gray-700">
+                Date
+              </th>
+              <th className="px-4 py-3 border border-gray-200 dark:border-gray-700 text-center">
+                Actions
+              </th>
             </tr>
           </thead>
-          <tbody className="text-gray-700">
+          <tbody className="text-gray-700 dark:text-gray-200">
             {watchlist.map(({ _id, itemName, marketName, date }) => (
-              <tr key={_id} className="hover:bg-indigo-50 transition">
-                <td className="px-4 py-3 border border-gray-200 capitalize">{itemName}</td>
-                <td className="px-4 py-3 border border-gray-200">{marketName}</td>
-                <td className="px-4 py-3 border border-gray-200">{date}</td>
-                <td className="px-4 py-3 border border-gray-200">
+              <tr key={_id} className="hover:bg-indigo-50 dark:hover:bg-gray-700 transition">
+                <td className="px-4 py-3 border border-gray-200 dark:border-gray-700 capitalize">
+                  {itemName}
+                </td>
+                <td className="px-4 py-3 border border-gray-200 dark:border-gray-700">
+                  {marketName}
+                </td>
+                <td className="px-4 py-3 border border-gray-200 dark:border-gray-700">
+                  {date}
+                </td>
+                <td className="px-4 py-3 border border-gray-200 dark:border-gray-700">
                   <div className="flex flex-wrap justify-center gap-2">
                     <button
-                      onClick={() => navigate('/allProducts')}
+                      onClick={() => navigate("/allProducts")}
                       className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs sm:text-sm"
                     >
                       ➕ Add More
@@ -127,15 +148,15 @@ const ManageWatchlist = () => {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-lg p-6 w-80 max-w-full text-center shadow-lg"
+              className="bg-white dark:bg-gray-800 rounded-lg p-6 w-80 max-w-full text-center shadow-lg"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
             >
-              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+              <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
                 Confirm Removal
               </h2>
-              <p className="mb-6 text-gray-600">
+              <p className="mb-6 text-gray-600 dark:text-gray-300">
                 Are you sure you want to remove this item from your watchlist?
               </p>
               <div className="flex justify-center gap-4">
@@ -147,7 +168,7 @@ const ManageWatchlist = () => {
                 </button>
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition"
                 >
                   Cancel
                 </button>

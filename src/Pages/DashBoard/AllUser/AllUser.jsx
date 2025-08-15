@@ -75,33 +75,32 @@ const AllUser = () => {
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
       <Helmet>
-        <title>
-          BB|AdminDashBoard
-        </title>
+        <title>BB | Admin Dashboard</title>
       </Helmet>
-      <h2 className="text-2xl font-bold mb-6 text-green-700 text-center">
+
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">
         👥 All Users
       </h2>
 
-      {/* 🔍 Search */}
+      {/* Search */}
       <div className="mb-6 flex justify-center">
         <input
           type="text"
           placeholder="Search by name or email..."
-          className="input input-bordered w-full max-w-md"
+          className="input input-bordered w-full max-w-md dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
       {isLoading ? (
-        <p className="text-center text-gray-600">Loading...</p>
+        <p className="text-center text-gray-600 dark:text-gray-300">Loading...</p>
       ) : users.length === 0 ? (
-        <p className="text-center text-gray-500">No users found.</p>
+        <p className="text-center text-gray-500 dark:text-gray-400">No users found.</p>
       ) : (
-        <div className="overflow-x-auto bg-white rounded-xl shadow border border-gray-200">
+        <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700">
           <table className="table w-full text-sm sm:text-base">
-            <thead className="bg-green-100 text-gray-800">
+            <thead className="bg-green-100 dark:bg-green-900 text-gray-800 dark:text-gray-200">
               <tr>
                 <th className="px-4 py-2">Email</th>
                 <th className="px-4 py-2 text-center">Role</th>
@@ -117,18 +116,20 @@ const AllUser = () => {
                   initial="hidden"
                   animate="visible"
                   variants={rowVariants}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200"
                 >
                   <td className="px-4 py-2 break-all max-w-[220px] sm:max-w-[300px]">
                     {user.email}
                   </td>
                   <td className="px-4 py-2 text-center">
                     <span
-                      className={`badge ${user.role === "admin"
+                      className={`badge ${
+                        user.role === "admin"
                           ? "badge-success"
                           : user.role === "vendor"
-                            ? "badge-info"
-                            : "badge-ghost"
-                        }`}
+                          ? "badge-info"
+                          : "badge-ghost"
+                      }`}
                     >
                       {user.role || "user"}
                     </span>
@@ -141,7 +142,7 @@ const AllUser = () => {
                   <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => handleRoleChange(user)}
-                      className="btn p-4 btn-xs bg-green-500 hover:bg-green-600 text-white"
+                      className="btn btn-xs bg-green-500 hover:bg-green-600 text-white"
                     >
                       Change Role
                     </button>
