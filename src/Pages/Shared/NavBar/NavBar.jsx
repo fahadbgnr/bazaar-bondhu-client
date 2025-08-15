@@ -77,6 +77,42 @@ const NavBar = () => {
               All Products
             </NavLink>
           </li>
+            <li>
+            <NavLink
+              to="/aboutUs"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-green-700 dark:text-green-400 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
+              }
+            >
+              About Us
+            </NavLink>
+          </li>
+             <li>
+            <NavLink
+              to="/contactUs"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-green-700 dark:text-green-400 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
+              }
+            >
+              Contact Us
+            </NavLink>
+          </li>
+            <li>
+            <NavLink
+              to="/privacy"
+              className={({ isActive }) =>
+                isActive
+                  ? 'text-green-700 dark:text-green-400 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
+              }
+            >
+              Privacy Policy
+            </NavLink>
+          </li>
         </>
       )}
       {user && (

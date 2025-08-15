@@ -27,6 +27,8 @@ import MyOrderList from "../Pages/DashBoard/UserDashboard/MyOrderList/MyOrderLis
 import Payment from "../Pages/DashBoard/UserDashboard/Payment/Payment";
 import TermsAndConditions from "../Pages/Shared/Footer/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../Pages/Shared/Footer/PtivacyPolicy/PrivacyPolicy";
+import AboutUs from "../Pages/AboutUs/AboutUs";
+import ContactUs from "../Pages/ContactUs/ContactUs";
 
 
 
@@ -49,6 +51,14 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute>
                     <DetailsPage></DetailsPage>
                 </PrivateRoute>
+            },
+            {
+                path: 'aboutUs',
+                Component: AboutUs
+            },
+            {
+                path: 'contactUs',
+                Component: ContactUs
             },
             {
                 path: 'forbidden',
