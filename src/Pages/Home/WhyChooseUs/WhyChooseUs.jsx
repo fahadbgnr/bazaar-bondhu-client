@@ -27,10 +27,10 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-16 px-6 text-center">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 px-6 bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto text-center">
         <motion.h2
-          className="text-3xl sm:text-4xl font-bold text-gray-800 mb-10"
+          className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-12"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -38,11 +38,11 @@ const WhyChooseUs = () => {
           Why Choose Us
         </motion.h2>
 
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 text-gray-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {reasons.map((item, idx) => (
             <motion.div
               key={idx}
-              className="p-6 rounded-lg shadow hover:shadow-md transition"
+              className="p-6 rounded-lg shadow hover:shadow-md transition bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
@@ -50,7 +50,7 @@ const WhyChooseUs = () => {
             >
               {item.icon}
               <h4 className="text-xl font-semibold mb-2">{item.title}</h4>
-              <p className="text-sm text-gray-600">{item.desc}</p>
+              <p className="text-sm sm:text-base">{item.desc}</p>
             </motion.div>
           ))}
         </div>
