@@ -27,7 +27,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-16 px-6 bg-gray-50 dark:bg-gray-900">
+    <section className="py-16 px-6">
       <div className="max-w-7xl mx-auto text-center">
         <motion.h2
           className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-12"
