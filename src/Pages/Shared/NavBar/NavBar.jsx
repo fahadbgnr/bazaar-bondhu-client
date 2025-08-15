@@ -57,7 +57,9 @@ const NavBar = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? 'text-green-700 font-semibold' : 'hover:text-green-600'
+                isActive
+                  ? 'text-green-700 dark:text-green-400 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
               }
             >
               Home
@@ -67,7 +69,9 @@ const NavBar = () => {
             <NavLink
               to="/allProducts"
               className={({ isActive }) =>
-                isActive ? 'text-green-700 font-semibold' : 'hover:text-green-600'
+                isActive
+                  ? 'text-green-700 dark:text-green-400 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
               }
             >
               All Products
@@ -80,7 +84,9 @@ const NavBar = () => {
           <NavLink
             to="/dashboard"
             className={({ isActive }) =>
-              isActive ? 'text-green-700 font-semibold' : 'hover:text-green-600'
+              isActive
+                ? 'text-green-700 dark:text-green-400 font-semibold'
+                : 'text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400'
             }
           >
             Dashboard
@@ -91,21 +97,17 @@ const NavBar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-50 bg-green-50 shadow-md">
+    <div className="sticky top-0 z-50 bg-green-50 dark:bg-gray-900 shadow-md">
       <div className="navbar container mx-auto px-4">
         {/* Start */}
         <div className="navbar-start">
           <div className="dropdown">
-            {/* 
-          If on dashboard, hide dropdown menu label on small device
-          Else show it
-        */}
             {!isDashboard && (
               <>
                 <label tabIndex={0} className="btn btn-ghost lg:hidden">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-6 w-6 text-gray-700 dark:text-gray-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -116,7 +118,7 @@ const NavBar = () => {
                 </label>
                 <ul
                   tabIndex={0}
-                  className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-green-50 rounded-box w-52"
+                  className="menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box w-52 bg-green-50 dark:bg-gray-800"
                 >
                   {navItems}
                 </ul>
@@ -154,7 +156,7 @@ const NavBar = () => {
                 <img
                   src={user.photoURL || 'https://i.ibb.co/4Y6tKwF/default-profile.png'}
                   alt="profile"
-                  className="w-9 h-9 rounded-full object-cover border-2 border-green-600"
+                  className="w-9 h-9 rounded-full object-cover border-2 border-green-600 dark:border-green-400"
                 />
               </div>
               <button
